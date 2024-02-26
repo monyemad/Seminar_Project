@@ -1,3 +1,6 @@
+import 'package:final_project/aging_page.dart';
+import 'package:final_project/dna_page.dart';
+import 'package:final_project/matching_page.dart';
 import 'package:final_project/profile_page.dart';
 import 'package:final_project/setting_page.dart';
 import 'package:flutter/material.dart';
@@ -129,35 +132,47 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 60,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 80,
                     backgroundImage: AssetImage("assets/images/dna-image.gif"),
                     backgroundColor: Colors.white38,
                   ),
-                  Text(
-                    'DNA\nMatching',
-                    style: TextStyle(fontSize: 20),
+                  TextButton(
+                    onPressed: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const DnaScreen();
+                          }));
+                    },
+                    child: const Text(
+                      'DNA\nMatching',
+                      style: TextStyle(fontSize: 20,color: Colors.black),
+                    ),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 40,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // CircleAvatar(
-                  //   radius: 80,
-                  //   backgroundColor: Colors.white38,
-                  // ),
-                  Text(
-                    'Features\nEvolution',
-                    style: TextStyle(fontSize: 20),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const EvolutionScreen();
+                          }));
+                    },
+                    child: const Text(
+                      'Features\nEvolution',
+                      style: TextStyle(fontSize: 20,color: Colors.black),
+                    ),
                   ),
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 80,
                     backgroundImage:
                         AssetImage("assets/images/fea evo.gif"),
@@ -168,18 +183,26 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 40,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 80,
                     backgroundImage:
                         AssetImage("assets/images/face reco.gif"),
                     backgroundColor: Colors.white38,
                   ),
-                  Text(
-                    'Image\nRecognition',
-                    style: TextStyle(fontSize: 20),
+                  TextButton(
+                    onPressed: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const RecognitionScreen();
+                          }));
+                    },
+                    child: const Text(
+                      'Image\nRecognition',
+                      style: TextStyle(fontSize: 20,color: Colors.black),
+                    ),
                   ),
                 ],
               ),

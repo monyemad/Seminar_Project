@@ -1,4 +1,6 @@
 import 'package:final_project/home_page.dart';
+import 'package:final_project/parent_page.dart';
+import 'package:final_project/volunteer_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -210,10 +212,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 actions: [
                                   TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushReplacement(context,
+                                            MaterialPageRoute(builder: (context) {
+                                              return const ParentScreen();
+                                            }));
+                                      },
                                       child: const Text('Parent')),
                                   TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushReplacement(context,
+                                            MaterialPageRoute(builder: (context) {
+                                              return const VolunteerScreen();
+                                            }));
+                                      },
                                       child: const Text('Volunteer')),
                                 ],
                               );
