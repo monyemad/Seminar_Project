@@ -1,8 +1,8 @@
-import 'package:final_project/aging_page.dart';
-import 'package:final_project/dna_page.dart';
-import 'package:final_project/matching_page.dart';
-import 'package:final_project/profile_page.dart';
-import 'package:final_project/setting_page.dart';
+import 'package:final_project/layout/aging_page.dart';
+import 'package:final_project/layout/dna_page.dart';
+import 'package:final_project/layout/matching_page.dart';
+import 'package:final_project/layout/profile_page.dart';
+import 'package:final_project/layout/setting_page.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -135,10 +135,18 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const CircleAvatar(
-                    radius: 80,
-                    backgroundImage: AssetImage("assets/images/dna-image.gif"),
-                    backgroundColor: Colors.white38,
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const DnaScreen();
+                          }));
+                    },
+                    child: const CircleAvatar(
+                      radius: 80,
+                      backgroundImage: AssetImage("assets/images/dna-image.gif"),
+                      backgroundColor: Colors.white38,
+                    ),
                   ),
                   TextButton(
                     onPressed: (){
@@ -172,11 +180,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(fontSize: 20,color: Colors.black),
                     ),
                   ),
-                  const CircleAvatar(
-                    radius: 80,
-                    backgroundImage:
-                        AssetImage("assets/images/fea evo.gif"),
-                    backgroundColor: Colors.white38,
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const EvolutionScreen();
+                          }));
+                    },
+                    child: const CircleAvatar(
+                      radius: 80,
+                      backgroundImage:
+                          AssetImage("assets/images/fea evo.gif"),
+                      backgroundColor: Colors.white38,
+                    ),
                   ),
                 ],
               ),
@@ -186,11 +202,19 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const CircleAvatar(
-                    radius: 80,
-                    backgroundImage:
-                        AssetImage("assets/images/face reco.gif"),
-                    backgroundColor: Colors.white38,
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const RecognitionScreen();
+                          }));
+                    },
+                    child: const CircleAvatar(
+                      radius: 80,
+                      backgroundImage:
+                          AssetImage("assets/images/face reco.gif"),
+                      backgroundColor: Colors.white38,
+                    ),
                   ),
                   TextButton(
                     onPressed: (){

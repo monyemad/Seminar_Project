@@ -1,4 +1,6 @@
-import 'package:final_project/login_page.dart';
+import 'dart:async';
+
+import 'package:final_project/sign_in/login_page.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -9,19 +11,16 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-
   @override
   void initState() {
     super.initState();
-    _navigatetologin();
-  }
-
-  _navigatetologin() async {
-    await Future.delayed(const Duration(milliseconds: 1600), () {});
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) =>
-           const LoginScreen()
-        ));
+    Timer(
+      const Duration(seconds: 2),
+      () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      ),
+    );
   }
 
   @override
@@ -54,28 +53,6 @@ class _FirstScreenState extends State<FirstScreen> {
                 // color: Colors.deepPurple
               ),
             ),
-            // const SizedBox(
-            //   height: 30,
-            // ),
-            // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //     alignment: Alignment.center,
-            //     minimumSize: const Size(250, 50),
-            //     padding: const EdgeInsets.all(12),
-            //     side: const BorderSide(
-            //         style: BorderStyle.solid, color: Colors.black12),
-            //     backgroundColor: Colors.orange.shade300,
-            //   ),
-            //   onPressed: () {},
-            //   child: const Text(
-            //     'Language',
-            //     style: TextStyle(
-            //       color: Colors.white,
-            //       fontWeight: FontWeight.bold,
-            //       fontSize: 25,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

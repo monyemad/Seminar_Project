@@ -1,4 +1,4 @@
-import 'package:final_project/login_page.dart';
+import 'package:final_project/sign_in/login_page.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -79,7 +79,7 @@ class SettingScreen extends StatelessWidget {
                                     onPressed: () {
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return const LoginScreen();
+                                        return LoginScreen();
                                       }));
                                     },
                                     child: const Text('YES')),

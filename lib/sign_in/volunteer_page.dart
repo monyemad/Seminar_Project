@@ -1,4 +1,5 @@
-import 'package:final_project/register_page.dart';
+import 'package:final_project/layout/home_page.dart';
+import 'package:final_project/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 enum ProductTypeEnum { Female, Male }
@@ -59,6 +60,8 @@ class _VolunteerScreenState extends State<VolunteerScreen> {
                 ),
                 const Divider(
                   thickness: 3,
+                  indent: 10,
+                  endIndent: 10,
                 ),
                 Container(
                   alignment: Alignment.topLeft,
@@ -264,6 +267,39 @@ class _VolunteerScreenState extends State<VolunteerScreen> {
                   alignment: Alignment.topLeft,
                   padding: const EdgeInsets.only(left: 35),
                   child: const Text(
+                    "Picture:",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: (){},
+                        icon: const Icon(Icons.install_mobile_rounded,size: 35,),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      TextButton(onPressed: (){},
+                          child: const Text('Import image',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.white70,
+                            ),))
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(left: 35),
+                  child: const Text(
                     "Child Name",
                     style: TextStyle(
                       fontSize: 20,
@@ -449,33 +485,14 @@ class _VolunteerScreenState extends State<VolunteerScreen> {
                   ],
                 ),
                 const SizedBox(height: 10,),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    alignment: Alignment.center,
-                    minimumSize: const Size(200, 50),
-                    padding: const EdgeInsets.all(12),
-                    side: const BorderSide(
-                        style: BorderStyle.solid, color: Colors.black12),
-                    backgroundColor: Colors.orange.shade300,
-                  ),
-                  onPressed: () {
-                    // if (formkey.currentState!.validate())
-                    // {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                          return const RegisterScreen();
-                        }));
-                    // }
-                  },
-                  child: const Text(
-                    'Submit',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
+                CustomButton(
+                    text: "Submit",
+                    onPressed: (){
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                        return const HomeScreen();
+                      }));
+                }),
                 const SizedBox(height: 10,)
               ],
             ),

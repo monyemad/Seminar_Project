@@ -1,4 +1,4 @@
-import 'package:final_project/login_page.dart';
+import 'package:final_project/layout/home_page.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -56,6 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 keyboardType: TextInputType.emailAddress,
                 controller: email,
                 decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.email_rounded),
                     hintText: 'Enter your email address',
                     hintStyle: TextStyle(
                       fontSize: 20,
@@ -100,7 +101,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.visiblePassword,
                 controller: password,
+                obscureText: true,
                 decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.lock_rounded),
                     suffixIcon: Icon(Icons.remove_red_eye_outlined),
                     hintText: 'Enter your password',
                     hintStyle: TextStyle(
@@ -146,7 +149,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.visiblePassword,
                 controller: confirmpassword,
+                obscureText: true,
                 decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.lock_rounded),
                     suffixIcon: Icon(Icons.remove_red_eye_outlined),
                     hintText: 'Enter your confirm password',
                     hintStyle: TextStyle(
@@ -179,7 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               onPressed: () {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) {
-                  return const LoginScreen();
+                  return const HomeScreen();
                 }));
               },
               child: const Text(
