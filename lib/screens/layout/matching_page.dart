@@ -1,4 +1,5 @@
 import 'package:final_project/widgets/custom_bgcolor.dart';
+import 'package:final_project/widgets/custom_pop.dart';
 import 'package:flutter/material.dart';
 
 class RecognitionScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class RecognitionScreen extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const CustomPop(bottom: 40,),
               const Image(
                 image: AssetImage("assets/images/matching image.png"),
               ),

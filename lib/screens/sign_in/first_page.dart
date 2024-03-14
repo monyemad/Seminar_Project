@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:final_project/sign_in/login_page.dart';
+import 'package:final_project/screens/sign_in/login_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
 

@@ -38,7 +38,7 @@ class _CustomGenderState extends State<CustomGender> {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey.shade200),
+                      color: Colors.white30),
                   child: RadioListTile<ProductTypeEnum>(
                     contentPadding: const EdgeInsets.all(0.0),
                     title: Text(ProductTypeEnum.Female.name),
@@ -62,7 +62,7 @@ class _CustomGenderState extends State<CustomGender> {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey.shade200),
+                      color: Colors.white30),
                   child: RadioListTile<ProductTypeEnum>(
                     contentPadding: const EdgeInsets.all(0.0),
                     title: Text(ProductTypeEnum.Male.name),

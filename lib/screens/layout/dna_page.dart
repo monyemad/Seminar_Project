@@ -1,4 +1,5 @@
 import 'package:final_project/widgets/custom_bgcolor.dart';
+import 'package:final_project/widgets/custom_pop.dart';
 import 'package:flutter/material.dart';
 
 class DnaScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class DnaScreen extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              CustomPop(bottom: 40,),
               Image(
                   image: AssetImage(
                       'assets/images/DNA 1.png'

@@ -12,13 +12,14 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
+      width: 250,
       child: MaterialButton(
+        elevation: 12,
           padding: const EdgeInsets.all(12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15)
+            borderRadius: BorderRadius.circular(15),
           ),
-          color: Colors.orange.shade300,
+          color: const Color(0xff0C359E),
         onPressed: onPressed,
         child: Text(
           text,
