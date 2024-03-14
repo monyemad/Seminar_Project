@@ -12,20 +12,39 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
-      child: MaterialButton(
-          padding: const EdgeInsets.all(12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15)
-          ),
-          color: Colors.orange.shade300,
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+      width: 250,
+      child: Container(
+        decoration: const BoxDecoration(
+          boxShadow: [
+            // BoxShadow(
+            //   color: Colors.black38,
+            //   offset: Offset(4,4),
+            //   blurRadius: 14,
+            //   spreadRadius: 1.0
+            // ),
+            // BoxShadow(
+            //   color: Colors.white38,
+            //   offset: Offset(-4,-4),
+            //   blurRadius: 14,
+            //   spreadRadius: 1.0
+            // ),
+          ],
+        ),
+        child: MaterialButton(
+          elevation: 12,
+            padding: const EdgeInsets.all(12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            color: Color(0xff0C359E),
+          onPressed: onPressed,
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
         ),
       ),
