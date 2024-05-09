@@ -17,7 +17,7 @@ class OtpCodeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Verification Code',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
@@ -26,7 +26,7 @@ class OtpCodeScreen extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.black54,
                     ),),
-                  SizedBox(height: 40,),
+                  const SizedBox(height: 40,),
                   OtpTextField(
                     borderRadius: BorderRadius.circular(14),
                     numberOfFields: 6,
@@ -34,12 +34,12 @@ class OtpCodeScreen extends StatelessWidget {
                     borderColor: const Color(0xFF512DA8),
                     showFieldAsBox: true,
                     onCodeChanged: (String code) {},
-                    onSubmit: (String verificationCode) {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const ResetPasswordScreen();
-                      }));
-                    }, // end onSubmit
+                    // onSubmit: (String verificationCode) {
+                    //   Navigator.pushReplacement(context,
+                    //       MaterialPageRoute(builder: (context) {
+                    //     return const ResetPasswordScreen();
+                    //   }));
+                    // }, // end onSubmit
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

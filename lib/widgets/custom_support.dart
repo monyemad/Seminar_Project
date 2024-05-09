@@ -37,7 +37,7 @@ class CustomSupport extends StatelessWidget {
             text,
             style: const TextStyle(fontSize: 20),
           ),
-          SizedBox(height: 6,),
+          const SizedBox(height: 6,),
           TextButton(
             onPressed: function,
             child: Text(text1,

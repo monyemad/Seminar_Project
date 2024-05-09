@@ -1,23 +1,18 @@
-import 'package:final_project/screens/layout/aging_page.dart';
-import 'package:final_project/screens/layout/dna_page.dart';
-import 'package:final_project/screens/layout/matching_page.dart';
-import 'package:final_project/screens/layout/profile_page.dart';
-import 'package:final_project/screens/layout/setting_page.dart';
-import 'package:final_project/screens/sign_in/parent_page.dart';
-import 'package:final_project/screens/sign_in/volunteer_page.dart';
+import 'package:final_project/screens/sign_in/login_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-import 'package:final_project/widgets/custom_home(ltr).dart';
-import 'package:final_project/widgets/custom_home(rtl).dart';
+import 'package:final_project/widgets/home/custom_home(ltr).dart';
+import 'package:final_project/widgets/home/custom_home(rtl).dart';
+import 'package:final_project/widgets/snakbar/custom_guest_home.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeGuestScreen extends StatefulWidget {
+  const HomeGuestScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeGuestScreen> createState() => _HomeGuestScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeGuestScreenState extends State<HomeGuestScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -33,18 +28,19 @@ class _HomeScreenState extends State<HomeScreen> {
               accountEmail: const Text('Example@gmail.com'),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
-                  child: Image.network(
-                    'https://img.freepik.com/premium-photo/beautiful-cute-anime-girl-innocent-anime-teenage_744422-6819.jpg',
-                    width: 120,
-                    height: 120,
+                  child: Image.asset(
+                    'assets/images/profile 2.jpg',
+                    fit: BoxFit.cover,
+                    width: 80,
+                    height: 80,
                   ),
                 ),
               ),
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                color: Colors.blueAccent,
                 image: DecorationImage(
-                    image: NetworkImage(
-                      'https://piktochart.com/wp-content/uploads/2023/05/large-157-600x330.jpg',
+                    image: AssetImage(
+                      'assets/images/bg image.jpg',
                     ),
                     fit: BoxFit.cover),
               ),
@@ -53,9 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ProfileScreen();
-                }));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: CustomGuestHome(
+                    title: 'On Snap!',
+                    message: 'Please, Login first',
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ));
               },
             ),
             const Divider(),
@@ -63,33 +65,77 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.settings),
               title: const Text('Setting'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const SettingScreen();
-                }));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: CustomGuestHome(
+                    title: 'On Snap!',
+                    message: 'Please, Login first',
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ));
               },
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.support_agent_rounded),
               title: const Text('Support'),
-              trailing: ClipOval(
-                child: Container(
-                  color: Colors.red,
-                  width: 20,
-                  height: 20,
-                  child: const Center(
-                    child: Text(
-                      '0',
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    ),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: CustomGuestHome(
+                    title: 'On Snap!',
+                    message: 'Please, Login first',
                   ),
-                ),
-              ),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ));
+              },
+              // trailing: ClipOval(
+              //   child: Container(
+              //     color: Colors.red,
+              //     width: 20,
+              //     height: 20,
+              //     child: const Center(
+              //       child: Text(
+              //         '0',
+              //         style: TextStyle(fontSize: 12, color: Colors.white),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.bloodtype_rounded),
-              title: Text('Test_Results'),
+            ListTile(
+              leading: const Icon(Icons.bloodtype_rounded),
+              title: const Text('Test_Results'),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: CustomGuestHome(
+                    title: 'On Snap!',
+                    message: 'Please, Login first',
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ));
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.report_rounded),
+              title: const Text('Complain'),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: CustomGuestHome(
+                    title: 'On Snap!',
+                    message: 'Please, Login first',
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ));
+              },
             ),
           ],
         ),
@@ -119,9 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 23, fontWeight: FontWeight.bold),
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const LoginScreen();
+                            }));
+                          },
                           icon: const Icon(
-                            Icons.notifications_rounded,
+                            Icons.logout_rounded,
                             color: Colors.grey,
                             size: 30,
                           )),
@@ -142,34 +193,54 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 actions: [
                                   TextButton(
-                                      onPressed: (){
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return const VolunteerScreen();
-                                            }));
-                                      }, child: Text("FOUND")),
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: CustomGuestHome(
+                                            title: 'On Snap!',
+                                            message: 'Please, Login first',
+                                          ),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0,
+                                        ));
+                                      },
+                                      child: const Text("FOUND")),
                                   TextButton(
-                                      onPressed: (){
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return const ParentScreen();
-                                            }));
-                                      }, child: Text("MISSING")),
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: CustomGuestHome(
+                                            title: 'On Snap!',
+                                            message: 'Please, Login first',
+                                          ),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0,
+                                        ));
+                                      },
+                                      child: const Text("MISSING")),
                                 ],
                               );
                             });
                       },
                       image: "assets/images/form.gif",
-                      text: "Form"),
+                      text: "Report Cases"),
                   const SizedBox(
                     height: 40,
                   ),
                   CustomHome(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return const DnaScreen();
-                            }));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: CustomGuestHome(
+                            title: 'On Snap!',
+                            message: 'Please, Login first',
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                        ));
                       },
                       image: "assets/images/dna-image.gif",
                       text: 'DNA\nMatching'),
@@ -178,10 +249,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   CustomHome2(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return const EvolutionScreen();
-                            }));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: CustomGuestHome(
+                            title: 'On Snap!',
+                            message: 'Please, Login first',
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                        ));
                       },
                       image: "assets/images/fea evo.gif",
                       text: 'Features\nEvolution'),
@@ -190,10 +267,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   CustomHome(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                            return const RecognitionScreen();
-                          }));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: CustomGuestHome(
+                          title: 'On Snap!',
+                          message: 'Please, Login first',
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ));
                     },
                     image: 'assets/images/face reco.gif',
                     text: 'Image\nRecognition',

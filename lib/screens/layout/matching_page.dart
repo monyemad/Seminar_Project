@@ -8,50 +8,53 @@ class RecognitionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const CustomBgColor(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CustomPop(bottom: 40,),
-              const Image(
-                image: AssetImage("assets/images/matching image.png"),
-              ),
-              const SizedBox(
-                height: 120,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 12, right: 12),
-                child: Text(
-                  'Please import the photo to predict if the image is matched.',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            const CustomBgColor(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CustomPop(bottom: 40,),
+                const Image(
+                  image: AssetImage("assets/images/matching image.png"),
                 ),
-              ),
-              const SizedBox(
-                height: 200,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: (){},
-                      icon: const Icon(Icons.install_mobile_rounded,size: 60,),
+                const SizedBox(
+                  height: 100,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 12, right: 12),
+                  child: Text(
+                    'Please import the photo to predict if the image is matched.',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  TextButton(onPressed: (){},
-                      child: const Text('Import image',
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white70,
-                      ),))
-                ],
-              ),
-            ],
-          ),
-        ],
+                ),
+                const SizedBox(
+                  height: 140,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                        onPressed: (){},
+                        icon: const Icon(Icons.install_mobile_rounded,size: 60,),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    TextButton(onPressed: (){},
+                        child: const Text('Import image',
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.white70,
+                        ),))
+                  ],
+                ),
+                SizedBox(height: 80,)
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,17 +1,17 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
+import 'package:final_project/screens/guest/home_guest.dart';
 import 'package:final_project/screens/layout/home_page.dart';
 import 'package:final_project/screens/sign_in/password/forgot_pwd_page.dart';
 import 'package:final_project/screens/sign_in/register_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-import 'package:final_project/widgets/custom_button.dart';
-import 'package:final_project/widgets/custom_text.dart';
-import 'package:final_project/widgets/custom_textformfield.dart';
+import 'package:final_project/widgets/snakbar/custom_error.dart';
+import 'package:final_project/widgets/form_field/custom_button.dart';
+import 'package:final_project/widgets/custom_login.dart';
+import 'package:final_project/widgets/form_field/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,26 +21,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-  String _responseData = '';
-
-  Future<void> loginData() async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://sa3edny-backend-nodejs.onrender.com/user/userLogin'));
-      if (response.statusCode == 201) {
-        Map<String, dynamic> userLogin = json.decode(response.body);
-        setState(() {
-          _responseData = userLogin['key'];
-        });
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
   bool sec = true;
 
   var visable = const Icon(Icons.visibility_rounded);
@@ -51,6 +31,15 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  String? validateEmail(String? email) {
+    RegExp emailRegex = RegExp(r'@');
+    final isEmailValid =emailRegex.hasMatch(email ?? '');
+    if(!isEmailValid){
+      return'Please enter a valid email';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,17 +68,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 8,
                       ),
-                      CustomTextFormField(
+                      CustomLogin(
                         hintText: "Enter your email",
                         controller: email,
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: Icons.email_rounded,
-                        validate: (value) {
-                          if (value!.isEmpty) {
-                            return 'email must not be empty';
-                          }
-                          return null;
-                        },
+                        validate: validateEmail,
                       ),
                       const SizedBox(
                         height: 30,
@@ -98,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 8,
                       ),
-                      CustomTextFormField(
+                      CustomLogin(
                         hintText: "Enter your password",
                         controller: password,
                         keyboardType: TextInputType.visiblePassword,
@@ -116,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (value!.isEmpty) {
                             return 'password must not be empty';
                           } else if (value.length < 6) {
-                            return 'password must be 8 numbers or letters';
+                            return 'password must be 6 numbers or letters';
                           }
                           return null;
                         },
@@ -130,8 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                      return const ForgotPasswordScreen();
-                                    }));
+                                  return const ForgotPasswordScreen();
+                                }));
                               },
                               child: const Text(
                                 "Forgot password?",
@@ -149,21 +133,37 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (state is LoginErrorState) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                  state.error,
+                                content: CustomSnackBarError(
+                                  message: state.error,
                                 ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
                               ),
                             );
                           } else if (state is LoginDoneState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AwesomeSnackbarContent(
+                                  title: 'Success',
+                                  message: state.message,
+                                  contentType: ContentType.success,
+                                  // color: const Color(0xffC40C0C),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                            );
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const HomeScreen();
-                                }));
+                              return const HomeScreen();
+                            }));
                           }
                         },
                         builder: (context, state) {
                           return SizedBox(
-                            width: 250,
+                            width: 220,
                             child: MaterialButton(
                               elevation: 12,
                               padding: const EdgeInsets.all(12),
@@ -171,26 +171,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               color: const Color(0xff0C359E),
-                              onPressed: loginData,
-                              //     () async {
-                              //   if (formkey.currentState!.validate()) {
-                              //     await context.read<AppCubitA>().loginData();
-                              //   }
-                              // },
+                              onPressed: () async {
+                                if (formkey.currentState!.validate()) {
+                                  await context.read<AppCubitA>().logIn(
+                                      password: password.text,
+                                      email: email.text);
+                                }
+                              },
                               child: state is LoginLoadingState
                                   ? const Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              )
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
                                   : const Text(
-                                "Login",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
+                                      "Login",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
                             ),
                           );
                         },
@@ -198,13 +199,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(_responseData),
                       CustomButton(
                           onPressed: () {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const HomeScreen();
-                                }));
+                              return const HomeGuestScreen();
+                            }));
                           },
                           text: 'Guest'),
                       const SizedBox(
@@ -220,8 +220,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                    return const RegisterScreen();
-                                  }));
+                                return const RegisterScreen();
+                              }));
                             },
                             child: const Text(
                               'Register Now',

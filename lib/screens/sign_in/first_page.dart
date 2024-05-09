@@ -36,8 +36,8 @@ class _FirstScreenState extends State<FirstScreen> {
               Center(
                 child: Image(
                   image: AssetImage('assets/images/APP Logo.png'),
-                  height: 240,
-                  width: 240,
+                  height: 220,
+                  width: 220,
                 ),
               ),
               Text(

@@ -1,10 +1,10 @@
-import 'package:final_project/screens/sign_in/password/verification_page.dart';
+import 'package:final_project/screens/sign_in/password/rest_pwd_page.dart';
+// import 'package:final_project/screens/sign_in/password/verification_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-import 'package:final_project/widgets/custom_button.dart';
+import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/custom_pop.dart';
-import 'package:final_project/widgets/custom_text.dart';
-import 'package:final_project/widgets/custom_textformfield.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:final_project/widgets/form_field/custom_text.dart';
+import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -15,28 +15,18 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  TextEditingController email = TextEditingController();
 
-  // @override
-  // void dispose() {
-  //   email.dispose();
-  //   super.dispose();
-  // }
-  //
-  // Future passwordReset() async {
-  //   try{
-  //     await FirebaseAuth.instance
-  //         .sendPasswordResetEmail(email: email.text.trim());
-  //   } on FirebaseAuthException catch(e){
-  //     // print(e);
-  //     showDialog(context: context, builder: (context){
-  //       return AlertDialog(
-  //         content: Text(e.message.toString()),
-  //       );
-  //     });
-  //   }
-  //   // return null;
-  // }
+  TextEditingController email = TextEditingController();
+  TextEditingController name = TextEditingController();
+
+  String? validateEmail(String? email) {
+    RegExp emailRegex = RegExp(r'@');
+    final isEmailValid =emailRegex.hasMatch(email ?? '');
+    if(!isEmailValid){
+      return'Please enter a valid email';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +39,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CustomPop(bottom: 0,),
+                  const CustomPop(
+                    bottom: 0,
+                  ),
                   const Image(
                     image: AssetImage('assets/images/forgot.png'),
                     height: 350,
@@ -74,6 +66,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   const SizedBox(
                     height: 25,
                   ),
+                  const CustomText(text: 'User Name:'),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomTextFormField(
+                      hintText: 'Enter your username',
+                      controller: name,
+                      prefixIcon: Icons.person_rounded,
+                      keyboardType: TextInputType.name,
+                    validate: (value){
+                        if(value!.isEmpty){
+                          return'username must not be empty';
+                        }return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const CustomText(text: 'Email:'),
                   const SizedBox(
                     height: 10,
@@ -82,16 +92,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       hintText: 'example@gmail.com',
                       controller: email,
                       prefixIcon: Icons.email_rounded,
-                      keyboardType: TextInputType.emailAddress),
+                      keyboardType: TextInputType.emailAddress,
+                    validate: validateEmail,
+                  ),
                   const SizedBox(
                     height: 40,
                   ),
                   CustomButton(
-                      text: 'Reset password',
+                      text: 'Next',
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const VerificationScreen();
+                          return ResetPasswordScreen(
+                            username: name.text,
+                                email: email.text,
+                          );
                         }));
                       })
                 ],

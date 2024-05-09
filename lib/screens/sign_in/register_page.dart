@@ -2,16 +2,13 @@ import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screens/layout/home_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-
-// import 'package:final_project/widgets/custom_button.dart';
-import 'package:final_project/widgets/custom_gender.dart';
 import 'package:final_project/widgets/custom_pop.dart';
-import 'package:final_project/widgets/custom_text.dart';
-import 'package:final_project/widgets/custom_textformfield.dart';
+import 'package:final_project/widgets/form_field/custom_text.dart';
+import 'package:final_project/widgets/form_field/custom_textformfield.dart';
+import 'package:final_project/widgets/select_and_radio/custom_radio.dart';
+import 'package:final_project/widgets/snakbar/custom_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-enum ProductTypeEnum { Female, Male }
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -21,7 +18,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  ProductTypeEnum? _productTypeEnum;
+  String? gender;
 
   bool sec = true;
   bool tek = true;
@@ -39,6 +36,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController confirmpassword = TextEditingController();
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  String? validateEmail(String? email) {
+    RegExp emailRegex = RegExp(r'@');
+    final isEmailValid = emailRegex.hasMatch(email ?? '');
+    if (!isEmailValid) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +72,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: name,
                         prefixIcon: Icons.account_circle_rounded,
                         keyboardType: TextInputType.name,
-                        validate: (value) {
-                          if (value!.isEmpty) {
-                            return 'name must not be empty';
-                          }
-                          return null;
-                        },
+                        validate: (name) => name!.length < 4
+                            ? 'Name should be at least 4 characters'
+                            : null,
                       ),
                       const SizedBox(
                         height: 20,
@@ -85,12 +88,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: username,
                         prefixIcon: Icons.account_circle_rounded,
                         keyboardType: TextInputType.name,
-                        validate: (value) {
-                          if (value!.isEmpty) {
-                            return 'username must not be empty';
-                          }
-                          return null;
-                        },
+                        validate: (username) => username!.length < 8
+                            ? 'Name should be at least 8 characters'
+                            : null,
                       ),
                       const SizedBox(
                         height: 20,
@@ -104,12 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: email,
                         prefixIcon: Icons.email_rounded,
                         keyboardType: TextInputType.emailAddress,
-                        validate: (value) {
-                          if (value!.isEmpty) {
-                            return 'email must not be empty';
-                          }
-                          return null;
-                        },
+                        validate: validateEmail,
                       ),
                       const SizedBox(
                         height: 20,
@@ -136,8 +131,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validate: (value) {
                           if (value!.isEmpty) {
                             return 'password must not be empty';
+                          } else if (RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{6,}$')
+                              .hasMatch(value)) {
+                            return null;
                           }
-                          return null;
+                          return 'Please enter a password';
                         },
                       ),
                       const SizedBox(
@@ -148,31 +146,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 8,
                       ),
                       CustomTextFormField(
-                        hintText: "Enter your confirm password",
-                        controller: confirmpassword,
-                        isObscureText: sec,
-                        keyboardType: TextInputType.visiblePassword,
-                        prefixIcon: Icons.lock_rounded,
-                        // prefixIcon: const Icon(Icons.key_rounded),
-                        suffixIcon: IconButton(
-                          icon: sec ? visableoff : visable,
-                          onPressed: () {
-                            setState(() {
-                              sec = !sec;
-                            });
-                          },
-                        ),
-                        validate: (value) {
-                          if (value!.isEmpty) {
-                            return 'confirm password must not be empty';
-                          } else if (value.length < 6) {
-                            return 'confirm password must be 6 numbers or letters';
-                          }
-                          // else {
-                          //   return 'confirm password does not match';
-                          // }
-                        },
-                      ),
+                          hintText: "Enter your confirm password",
+                          controller: confirmpassword,
+                          isObscureText: sec,
+                          keyboardType: TextInputType.visiblePassword,
+                          prefixIcon: Icons.lock_rounded,
+                          // prefixIcon: const Icon(Icons.key_rounded),
+                          suffixIcon: IconButton(
+                            icon: sec ? visableoff : visable,
+                            onPressed: () {
+                              setState(() {
+                                sec = !sec;
+                              });
+                            },
+                          ),
+                          validate: (value) {
+                            if (value!.isEmpty) {
+                              return 'Password must not be empty';
+                            } else if (value != password.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          }),
                       const SizedBox(
                         height: 20,
                       ),
@@ -188,6 +183,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validate: (value) {
                           if (value!.isEmpty) {
                             return 'phone must not be empty';
+                          } else if (phone.text.length != 10) {
+                            return 'Please Enter a valid number';
                           }
                           return null;
                         },
@@ -206,7 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         keyboardType: TextInputType.number,
                         validate: (value) {
                           if (value!.isEmpty) {
-                            return 'age must not be empty';
+                            return 'Age must not be empty';
                           }
                           return null;
                         },
@@ -214,86 +211,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      // const CustomGender(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.only(left: 20),
-                            child: const Text(
-                              'Gender :',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 25, right: 4),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.white30),
-                                    child: RadioListTile<ProductTypeEnum>(
-                                      contentPadding: const EdgeInsets.all(0.0),
-                                      title: Text(ProductTypeEnum.Female.name),
-                                      value: ProductTypeEnum.Female,
-                                      groupValue: _productTypeEnum,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _productTypeEnum = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 25),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.white30),
-                                    child: RadioListTile<ProductTypeEnum>(
-                                      contentPadding: const EdgeInsets.all(0.0),
-                                      title: Text(ProductTypeEnum.Male.name),
-                                      value: ProductTypeEnum.Male,
-                                      groupValue: _productTypeEnum,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _productTypeEnum = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      CustomRadio(
+                        text: "Gender:",
+                        title: "Female",
+                        value: 'Female',
+                        groupValue: gender,
+                        title1: "Male",
+                        value1: "Male",
+                        onChange: (value) {
+                          setState(() {
+                            gender = value;
+                          });
+                        },
                       ),
                       const SizedBox(
-                        height: 50,
+                        height: 10,
                       ),
                       BlocConsumer<AppCubitA, AppStateA>(
                         listener: (context, state) {
                           if (state is CreateErrorState) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                  state.error,
+                                content: CustomSnackBarError(
+                                  message: state.error,
                                 ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
                               ),
                             );
                           } else if (state is CreateDoneState) {
@@ -305,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                         builder: (context, state) {
                           return SizedBox(
-                            width: 250,
+                            width: 220,
                             child: MaterialButton(
                               elevation: 12,
                               padding: const EdgeInsets.all(12),
@@ -322,7 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         name: name.text,
                                         username: username.text,
                                         age: age.text,
-                                        gender: _productTypeEnum.toString(),
+                                        gender: gender.toString(),
                                         phone: phone.text,
                                       );
                                 }

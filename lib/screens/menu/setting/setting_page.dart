@@ -1,8 +1,8 @@
-import 'package:final_project/screens/layout/edit_account_page.dart';
+import 'package:final_project/screens/menu/setting/edit_account_page.dart';
 import 'package:final_project/screens/sign_in/login_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:final_project/widgets/custom_pop.dart';
-import 'package:final_project/widgets/custom_setting_dialog.dart';
+import 'package:final_project/widgets/dialog/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreen extends StatefulWidget {

@@ -10,25 +10,20 @@ class DoneState extends AppStateA {}
 
 class PickImageState extends AppStateA {}
 
-// GetData
+// Get data
+
+class GetDataDoneState extends AppStateA {}
+
 class GetDataLoadingState extends AppStateA {}
 
 class GetDataErrorState extends AppStateA {
   final String error;
-
   GetDataErrorState(this.error);
 }
 
-class GetDataDoneState extends AppStateA {}
-
 // Login
+
 class LoginLoadingState extends AppStateA {}
-
-class LoginFailState extends AppStateA {
-  final String fail;
-
-  LoginFailState(this.fail);
-}
 
 class LoginErrorState extends AppStateA {
   final String error;
@@ -37,20 +32,27 @@ class LoginErrorState extends AppStateA {
 }
 
 class LoginDoneState extends AppStateA {
-  final String done;
+  final String message;
+  final String userId;
 
-  LoginDoneState(this.done);
+  LoginDoneState(this.userId, this.message);
 }
+
+// Reset
+
+class ResetLoadingState extends AppStateA {}
+
+class ResetErrorState extends AppStateA {
+  final String error;
+
+  ResetErrorState(this.error);
+}
+
+class ResetDoneState extends AppStateA {}
 
 // Create acc
 
 class CreateLoadingState extends AppStateA {}
-
-class CreateFailState extends AppStateA {
-  final String fail;
-
-  CreateFailState(this.fail);
-}
 
 class CreateErrorState extends AppStateA {
   final String error;
@@ -75,3 +77,50 @@ class UploadErrorState extends AppStateA {
 }
 
 class UploadDoneState extends AppStateA {}
+
+// Missing Case
+
+class MissingCaseLoadingState extends AppStateA {}
+
+class MissingCaseErrorState extends AppStateA {
+  final String error;
+
+  MissingCaseErrorState(this.error);
+}
+
+class MissingCaseDoneState extends AppStateA {
+  final String done;
+
+  MissingCaseDoneState(this.done);
+}
+// Found Case
+
+class FoundCaseLoadingState extends AppStateA {}
+
+class FoundCaseErrorState extends AppStateA {
+  final String error;
+
+  FoundCaseErrorState(this.error);
+}
+
+class FoundCaseDoneState extends AppStateA {
+  final String done;
+
+  FoundCaseDoneState(this.done);
+}
+
+// Therapy Session
+
+class TherapySessionLoadingState extends AppStateA {}
+
+class TherapySessionErrorState extends AppStateA {
+  final String error;
+
+  TherapySessionErrorState(this.error);
+}
+
+class TherapySessionDoneState extends AppStateA {
+  final String done;
+
+  TherapySessionDoneState(this.done);
+}

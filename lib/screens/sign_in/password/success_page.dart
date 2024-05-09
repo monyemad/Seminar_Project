@@ -1,6 +1,6 @@
-import 'package:final_project/screens/guest/home_guest.dart';
+import 'package:final_project/screens/layout/home_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-import 'package:final_project/widgets/custom_button.dart';
+import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class SuccessScreen extends StatelessWidget {

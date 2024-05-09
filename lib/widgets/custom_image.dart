@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CustomStack extends StatelessWidget {
+class CustomProfileImg extends StatelessWidget {
   final String? image;
   final double? right;
   final IconData? icon;
 
-  const CustomStack({super.key, this.image, this.right, this.icon});
+  const CustomProfileImg({super.key, this.image, this.right, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -13,18 +13,9 @@ class CustomStack extends StatelessWidget {
       children: [
         const CircleAvatar(
           radius: 80,
-          backgroundImage:
-              // context
-              //             .read<AppCubitA>()
-              //             .userData!
-              //             .image ==
-              //         ''
-              //     ? const
-              NetworkImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIraIxLFndsHnK34RQm1q525ZHz77CFY2vCw&usqp=CAU")
-          // : NetworkImage(
-          //     context.read<AppCubitA>().userData!.image),
-          ,
+          backgroundImage: NetworkImage(
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIraIxLFndsHnK34RQm1q525ZHz77CFY2vCw&usqp=CAU"
+          ),
           backgroundColor: Colors.white70,
         ),
         Positioned(

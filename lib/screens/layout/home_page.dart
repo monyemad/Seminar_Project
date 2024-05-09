@@ -1,14 +1,16 @@
 import 'package:final_project/screens/layout/aging_page.dart';
-import 'package:final_project/screens/layout/dna_page.dart';
+import 'package:final_project/screens/layout/dna/dna_page.dart';
+import 'package:final_project/screens/layout/forms/volunteer_page.dart';
 import 'package:final_project/screens/layout/matching_page.dart';
-import 'package:final_project/screens/layout/profile_page.dart';
-import 'package:final_project/screens/layout/setting_page.dart';
-import 'package:final_project/screens/layout/support_page.dart';
-import 'package:final_project/screens/sign_in/parent_page.dart';
-import 'package:final_project/screens/sign_in/volunteer_page.dart';
+import 'package:final_project/screens/menu/profile_page.dart';
+import 'package:final_project/screens/menu/result_page.dart';
+import 'package:final_project/screens/menu/setting/setting_page.dart';
+import 'package:final_project/screens/menu/support_page.dart';
+import 'package:final_project/screens/menu/complain.dart';
+import 'package:final_project/screens/layout/forms/parent_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-import 'package:final_project/widgets/custom_home(ltr).dart';
-import 'package:final_project/widgets/custom_home(rtl).dart';
+import 'package:final_project/widgets/home/custom_home(ltr).dart';
+import 'package:final_project/widgets/home/custom_home(rtl).dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -72,8 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const Divider(),
             ListTile(
-              leading: Icon(Icons.support_agent_rounded),
-              title: Text('Support'),
+              leading: const Icon(Icons.support_agent_rounded),
+              title: const Text('Support'),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const SupportScreen();
@@ -94,9 +96,23 @@ class _HomeScreenState extends State<HomeScreen> {
               // ),
             ),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.bloodtype_rounded),
-              title: Text('Test_Results'),
+            ListTile(
+                leading: const Icon(Icons.bloodtype_rounded),
+                title: const Text('Test_Results'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const AiModelResultScreen();
+                  }));
+                }),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.report_rounded),
+              title: const Text('Complain'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const ComplainScreen();
+                }));
+              },
             ),
           ],
         ),
@@ -149,20 +165,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 actions: [
                                   TextButton(
-                                      onPressed: (){
+                                      onPressed: () {
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return const ParentScreen();
-                                            }));
-                                      }, child: const Text("MISSING")),
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const ParentScreen();
+                                        }));
+                                      },
+                                      child: const Text("MISSING")),
                                   TextButton(
-                                      onPressed: (){
+                                      onPressed: () {
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return const VolunteerScreen();
-                                            }));
-                                      }, child: const Text("FOUND")),
-
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const VolunteerScreen();
+                                        }));
+                                      },
+                                      child: const Text("FOUND")),
                                 ],
                               );
                             });

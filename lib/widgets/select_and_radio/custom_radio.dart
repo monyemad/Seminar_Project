@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 
-enum ProductTypeEnum { Female, Male }
+class CustomRadio extends StatelessWidget {
+  final String text;
+  final String title;
+  final String value;
+  final String? groupValue;
+  final Function(dynamic) onChange;
+  final String title1;
+  final String value1;
 
-class CustomGender extends StatefulWidget {
-  const CustomGender({super.key});
-
-  @override
-  State<CustomGender> createState() => _CustomGenderState();
-}
-
-class _CustomGenderState extends State<CustomGender> {
-  ProductTypeEnum? _productTypeEnum;
+  const CustomRadio(
+      {super.key,
+      required this.text,
+      required this.title,
+      required this.value,
+      required this.groupValue,
+      required this.title1,
+      required this.value1,
+      required this.onChange,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +28,9 @@ class _CustomGenderState extends State<CustomGender> {
         Container(
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.only(left: 20),
-          child: const Text(
-            'Gender :',
-            style: TextStyle(
+          child: Text(
+            text,
+            style: const TextStyle(
               fontSize: 20,
             ),
           ),
@@ -38,17 +46,15 @@ class _CustomGenderState extends State<CustomGender> {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          style: BorderStyle.solid, color: Colors.black12),
                       color: Colors.white30),
-                  child: RadioListTile<ProductTypeEnum>(
+                  child: RadioListTile(
                     contentPadding: const EdgeInsets.all(0.0),
-                    title: Text(ProductTypeEnum.Female.name),
-                    value: ProductTypeEnum.Female,
-                    groupValue: _productTypeEnum,
-                    onChanged: (value) {
-                      setState(() {
-                        _productTypeEnum = value;
-                      });
-                    },
+                    title: Text(title),
+                    value: value,
+                    groupValue: groupValue,
+                    onChanged: onChange,
                   ),
                 ),
               ),
@@ -62,17 +68,15 @@ class _CustomGenderState extends State<CustomGender> {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          style: BorderStyle.solid, color: Colors.black12),
                       color: Colors.white30),
-                  child: RadioListTile<ProductTypeEnum>(
+                  child: RadioListTile(
                     contentPadding: const EdgeInsets.all(0.0),
-                    title: Text(ProductTypeEnum.Male.name),
-                    value: ProductTypeEnum.Male,
-                    groupValue: _productTypeEnum,
-                    onChanged: (value) {
-                      setState(() {
-                        _productTypeEnum = value;
-                      });
-                    },
+                    title: Text(title1),
+                    value: value1,
+                    groupValue: groupValue,
+                    onChanged: onChange,
                   ),
                 ),
               ),

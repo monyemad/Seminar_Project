@@ -1,6 +1,6 @@
 import 'package:final_project/screens/sign_in/password/otp_code_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-import 'package:final_project/widgets/custom_button.dart';
+import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class VerificationScreen extends StatelessWidget {
