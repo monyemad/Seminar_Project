@@ -131,8 +131,8 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                             ? Image.file(img!)
                             : Image.asset(
                                 'assets/images/child (2).png',
-                                height: 100,
-                                width: 100,
+                                // height: 150,
+                                width: 150,
                               ),
                         Positioned(
                           bottom: 0,

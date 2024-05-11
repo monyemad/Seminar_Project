@@ -2,7 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/layout/home_page.dart';
-import 'package:final_project/widgets/custom_date.dart';
+import 'package:final_project/widgets/date_and_time/custom_date.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:final_project/widgets/select_and_radio/custom_select.dart';
 import 'package:final_project/widgets/select_and_radio/custom_radio.dart';
@@ -252,17 +252,9 @@ class _LaboratoryScreenState extends State<LaboratoryScreen> {
                         height: 8,
                       ),
                       CustomDate(
-                        hintText: '${dateTime.day},${dateTime.month},${dateTime.year}',
-                        keyboardType: TextInputType.datetime,
-                        // validate: (value) {
-                        //   if (value!.isEmpty) {
-                        //     return 'appointment must not be empty';
-                        //   }
-                        //   return null;
-                        // },
-                        prefixIcon: IconButton(
-                            onPressed: _showDatePicker,
-                            icon: const Icon(Icons.date_range_rounded)),
+                        text:
+                            '${dateTime.day},${dateTime.month},${dateTime.year}',
+                        onPressed: _showDatePicker,
                       ),
                       const SizedBox(
                         height: 20,

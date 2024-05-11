@@ -1,8 +1,12 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:final_project/controllers/user_controller.dart';
+import 'package:final_project/screen/layout/home_page.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:final_project/widgets/custom_pop.dart';
-import 'package:final_project/widgets/custom_image.dart';
+import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class EditAccountScreen extends StatefulWidget {
   const EditAccountScreen({super.key});
@@ -12,11 +16,17 @@ class EditAccountScreen extends StatefulWidget {
 }
 
 class _EditAccountScreenState extends State<EditAccountScreen> {
+  UserController userController = Get.put(UserController());
+
   TextEditingController name = TextEditingController();
-  TextEditingController phone = TextEditingController();
+  TextEditingController username = TextEditingController();
+  TextEditingController age = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
   TextEditingController gender = TextEditingController();
-  TextEditingController birth = TextEditingController();
+  TextEditingController password = TextEditingController();
   TextEditingController email = TextEditingController();
+
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,59 +34,115 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       body: Stack(
         children: [
           const CustomBgColor(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CustomPop(bottom: 70,),
-              const CustomProfileImg(
-                icon: Icons.edit_rounded,
+          SingleChildScrollView(
+            child: Form(
+              key: formkey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CustomPop(bottom: 70,),
+                  CustomTextFormField(
+                    hintText: 'Name',
+                    controller: name,
+                    keyboardType: TextInputType.name,
+                    prefixIcon: Icons.person_rounded,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: 'UserName',
+                    controller: username,
+                    keyboardType: TextInputType.name,
+                    prefixIcon: Icons.person_rounded,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: 'Email',
+                    controller: email,
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: Icons.email_rounded,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: 'Phone number',
+                    controller: phoneNumber,
+                    keyboardType: TextInputType.phone,
+                    prefixIcon: Icons.phone_rounded,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: 'Gender',
+                    controller: gender,
+                    keyboardType: TextInputType.text,
+                    prefixIcon: Icons.face,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: 'Password',
+                    controller:password,
+                    keyboardType: TextInputType.visiblePassword,
+                    prefixIcon: Icons.lock_rounded,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: 'Age',
+                    controller:age,
+                    keyboardType: TextInputType.number,
+                    prefixIcon: Icons.numbers_rounded,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      userController.updateUserData();
+                      if(formkey.currentState!.validate()){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: AwesomeSnackbarContent(
+                              title: 'Success',
+                              message: "user is updated successfully",
+                              contentType: ContentType.success,
+                              // color: const Color(0xffC40C0C),
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                        );
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                              return const HomeScreen();
+                            }));
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: CustomSnackBarError(
+                              message: "user must enter all the data first",
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('update data'),
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomTextFormField(
-                hintText: 'Name',
-                controller: name,
-                keyboardType: TextInputType.name,
-                prefixIcon: Icons.person_rounded,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomTextFormField(
-                hintText: 'Email',
-                controller: email,
-                keyboardType: TextInputType.emailAddress,
-                prefixIcon: Icons.email_rounded,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomTextFormField(
-                hintText: 'Phone number',
-                controller: phone,
-                keyboardType: TextInputType.phone,
-                prefixIcon: Icons.phone_rounded,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomTextFormField(
-                hintText: 'Gender',
-                controller: gender,
-                keyboardType: TextInputType.text,
-                prefixIcon: Icons.face,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomTextFormField(
-                hintText: 'BirthDate',
-                controller: birth,
-                keyboardType: TextInputType.datetime,
-                prefixIcon: Icons.cake_rounded,
-              ),
-            ],
+            ),
           ),
         ],
       ),

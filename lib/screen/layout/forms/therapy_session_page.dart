@@ -1,7 +1,8 @@
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/menu/support_page.dart';
-import 'package:final_project/widgets/custom_date.dart';
+import 'package:final_project/widgets/date_and_time/custom_date.dart';
+import 'package:final_project/widgets/date_and_time/custom_time.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
@@ -21,12 +22,10 @@ class TherapyScreen extends StatefulWidget {
 }
 
 class _TherapyScreenState extends State<TherapyScreen> {
-
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController booking = TextEditingController();
-  TextEditingController appointment = TextEditingController();
   TextEditingController feedback = TextEditingController();
   TextEditingController age = TextEditingController();
   TextEditingController gender = TextEditingController();
@@ -38,13 +37,25 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
   void _showDatePicker() {
     showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2024),
-        lastDate: DateTime(2030))
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2024),
+            lastDate: DateTime(2030))
         .then((value) {
       setState(() {
         dateTime = value!;
+      });
+    });
+  }
+
+  TimeOfDay _timeOfDay = const TimeOfDay(hour: 10, minute: 30);
+
+  void _showTimePicker() {
+    showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now()).then((value) {
+      setState(() {
+        _timeOfDay = value!;
       });
     });
   }
@@ -199,17 +210,9 @@ class _TherapyScreenState extends State<TherapyScreen> {
                       height: 10,
                     ),
                     CustomDate(
-                      hintText: '${dateTime.day},${dateTime.month},${dateTime.year}',
-                      keyboardType: TextInputType.datetime,
-                      // validate: (value) {
-                      //   if (value!.isEmpty) {
-                      //     return 'appointment must not be empty';
-                      //   }
-                      //   return null;
-                      // },
-                      prefixIcon: IconButton(
-                          onPressed: _showDatePicker,
-                          icon: const Icon(Icons.date_range_rounded)),
+                      text:
+                      '${dateTime.day},${dateTime.month},${dateTime.year}',
+                      onPressed: _showDatePicker,
                     ),
                     const SizedBox(
                       height: 20,
@@ -218,17 +221,9 @@ class _TherapyScreenState extends State<TherapyScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomTextFormField(
-                        keyboardType: TextInputType.datetime,
-                        controller: appointment,
-                        hintText: 'Enter you appointment',
-                        prefixIcon: Icons.timelapse_rounded,
-                        validate: (value) {
-                          if (value!.isEmpty) {
-                            return 'appointment must not be empty';
-                          }
-                          return null;
-                        }),
+                    CustomTime(
+                        text: _timeOfDay.format(context).toString(),
+                        onPressed: _showTimePicker),
                     const SizedBox(
                       height: 30,
                     ),
@@ -336,20 +331,18 @@ class _TherapyScreenState extends State<TherapyScreen> {
                             color: const Color(0xff0C359E),
                             onPressed: () async {
                               if (formkey.currentState!.validate()) {
-                                await context
-                                    .read<AppCubitA>()
-                                    .therapySession(
-                                        name: name.text,
-                                        email: email.text,
-                                        date: dateTime.toString(),
-                                        age: age.text,
-                                        gender: gender.text,
-                                        contactNumber: phone.text,
-                                        appointment: appointment.text,
-                                        where: where.text,
-                                        subjectDetails: subject.text,
-                                        status: status.text,
-                                        feedback: feedback.text);
+                                await context.read<AppCubitA>().therapySession(
+                                    name: name.text,
+                                    email: email.text,
+                                    date: dateTime.toString(),
+                                    age: age.text,
+                                    gender: gender.text,
+                                    contactNumber: phone.text,
+                                    appointment: _timeOfDay.format(context).toString(),
+                                    where: where.text,
+                                    subjectDetails: subject.text,
+                                    status: status.text,
+                                    feedback: feedback.text);
                               }
                             },
                             child: state is TherapySessionLoadingState

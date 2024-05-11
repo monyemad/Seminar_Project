@@ -1,11 +1,12 @@
-import 'dart:io';
+// import 'dart:io';
 import 'dart:convert';
 import 'dart:convert' as convert;
+import 'package:final_project/model/profile_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class AppCubitA extends Cubit<AppStateA> {
   AppCubitA() : super(MyAppInitial());
@@ -22,40 +23,41 @@ class AppCubitA extends Cubit<AppStateA> {
     return prefs.getString('userId');
   }
 
-  Future<void> getDataFromFirebase(
-    String name,
-    String email,
-    String phone,
-    String gender,
-    String age,
-    String image,
-  ) async {
-    try {
-      emit(GetDataLoadingState());
-      Map<String, dynamic> request = {
-        'name': name,
-        "email": email,
-        "phone": phone,
-        'image': image,
-        'gender': gender,
-        'age': age,
-      };
-      var response = await http.put(
-          Uri.parse(
-              'https://sa3edny-backend-nodejs.onrender.com/user/updateUser/$userId'),
-          body: convert.jsonEncode(request),
-          headers: {"Content-type": "application/json"});
-      if (response.statusCode == 200) {
-        print('Response: ${response.body}');
-        emit(GetDataDoneState());
-      } else {
-        emit(GetDataErrorState("Failed to load: ${response.statusCode}"));
-      }
-      emit(GetDataDoneState());
-    } catch (e) {
-      emit(GetDataErrorState(e.toString()));
-    }
-  }
+  // Future<void> editEditProfile({
+  //   required String name,
+  //   required String email,
+  //   required String phone,
+  //   required String gender,
+  //   required String age,
+  //   required String username,
+  //   required String password,
+  // }) async {
+  //   try {
+  //     emit(EditProfileLoadingState());
+  //     // Map<String, dynamic> request = {
+  //     //   'username': username,
+  //     //   'password': password,
+  //     //   'name': name,
+  //     //   'age': age,
+  //     //   'gender': gender,
+  //     //   "email": email,
+  //     //   "phoneNumber": phone,
+  //     // };
+  //     var response = await http.put(
+  //         Uri.parse(
+  //             'https://sa3edny-backend-nodejs.onrender.com/user/updateUser/$userId'),
+  //         // body: convert.jsonEncode(request),
+  //         headers: {"Content-type": "application/json"});
+  //     if (response.statusCode == 200) {
+  //       print('Response: ${response.body}');
+  //       emit(EditProfileDoneState("edit profile is successfully"));
+  //     } else {
+  //       emit(EditProfileErrorState("Failed to load: ${response.statusCode}"));
+  //     }
+  //   } catch (e) {
+  //     emit(EditProfileErrorState(e.toString()));
+  //   }
+  // }
 
   Future<void> registerUser(
       {required String email,
@@ -160,6 +162,62 @@ class AppCubitA extends Cubit<AppStateA> {
     }
   }
 
+  // ProfileModel? userData;
+  //
+  // Future<void> profileData(
+  //     {required String email,
+  //       required String password,
+  //       required String name,
+  //       required String username,
+  //       required String age,
+  //       required String gender,
+  //       required String phone}
+  //     ) async {
+  //   try {
+  //     emit(ProfileLoadingState());
+  //     String? userId = await getVariable();
+  //     print('Retrieved userId: $userId'); // Debug print
+  //     if (userId == null) {
+  //       emit(ProfileErrorState("UserId is null"));
+  //       return;
+  //     }
+  //     final response = await http.get(
+  //       Uri.parse('https://sa3edny-backend-nodejs.onrender.com/User/getUseById/$userId'),
+  //     );
+  //     if (response.statusCode == 200) {
+  //       emit(ProfileDoneState("get profile data successfully"));
+  //     } else {
+  //       emit(ProfileErrorState('Failed to fetch user data'));
+  //     }
+  //   } catch (e) {
+  //     emit(ProfileErrorState('Error fetching user data: $e'));
+  //   }
+  // }
+
+
+  // Future<void> profileData(String username) async {
+  //   try {
+  //     emit(ProfileLoadingState());
+  //     String? userId = await getVariable();
+  //     print('Retrieved userId: $userId'); // Debug print
+  //     if (userId == null) {
+  //       emit(ProfileErrorState("UserId is null"));
+  //       return;
+  //     }
+  //     final response = await http.get(Uri.parse(
+  //         'https://sa3edny-backend-nodejs.onrender.com/user/updateUser/$userId'));
+  //     if (response.statusCode == 200) {
+  //       print('user is rest successfully: ${response.body}');
+  //       emit(ProfileDoneState());
+  //     } else {
+  //       print("Failed to reset user. Status code: ${response.statusCode}");
+  //       emit(ProfileErrorState(
+  //           "Failed to reset user. Status code: ${response.statusCode}"));
+  //     }
+  //   } catch (e) {
+  //     emit(ProfileErrorState(e.toString()));
+  //   }
+  // }
 
   Future<void> foundCase({
     required String age,
@@ -404,7 +462,6 @@ class AppCubitA extends Cubit<AppStateA> {
   //   }
   // }
 
-
   Future<void> dnaData({
     required String name,
     required String gender,
@@ -416,8 +473,8 @@ class AppCubitA extends Cubit<AppStateA> {
     required String lab,
     required String branch,
     required String appointment,
-}) async{
-    try{
+  }) async {
+    try {
       emit(DnaLabLoadingState());
       Map<String, String> userData = {
         'patient_name': name,
@@ -432,17 +489,54 @@ class AppCubitA extends Cubit<AppStateA> {
         'appointment': appointment,
       };
       final response = await http.post(
-          Uri.parse("https://sa3edny-backend-nodejs.onrender.com/lab/createLab"),
-        body: convert.jsonEncode(userData),
+          Uri.parse(
+              "https://sa3edny-backend-nodejs.onrender.com/reservation/createReservation"),
+          body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
-    if (response.statusCode == 200) {
-    emit(DnaLabDoneState("dna lab created successfully"));
-    } else {
-    emit(DnaLabErrorState(
-    "Failed to created.Status code: ${response.statusCode}"));
-    }
+      if (response.statusCode == 200) {
+        emit(DnaLabDoneState("dna lab created successfully"));
+      } else {
+        emit(DnaLabErrorState(
+            "Failed to created.Status code: ${response.statusCode}"));
+      }
     } catch (e) {
-    emit(DnaLabErrorState(e.toString()));
+      emit(DnaLabErrorState(e.toString()));
+    }
+  }
+
+  Future<void> supportData({
+    required String complain,
+  }) async {
+    try {
+      emit(SupportLoadingState());
+      String? userId = await getVariable();
+      print('Retrieved userId: $userId'); // Debug print
+      if (userId == null) {
+        emit(TherapySessionErrorState("UserId is null"));
+        return;
+      }
+      Map<String, String> userData = {
+        "name": "",
+        "contactNumber": "",
+        "email": "",
+        "date": "",
+        "complaintDetails": complain,
+        "status": "",
+        "feedback": ''
+      };
+      final response = await http.post(
+          Uri.parse(
+              "https://sa3edny-backend-nodejs.onrender.com/support/createReq/$userId"),
+          body: convert.jsonEncode(userData),
+          headers: {"Content-type": "application/json"});
+      if (response.statusCode == 200) {
+        emit(SupportDoneState("Support created successfully"));
+      } else {
+        emit(SupportErrorState(
+            "Failed to created.Status code: ${response.statusCode}"));
+      }
+    } catch (e) {
+      emit(SupportErrorState(e.toString()));
     }
   }
 }
