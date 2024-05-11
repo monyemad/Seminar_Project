@@ -124,3 +124,19 @@ class TherapySessionDoneState extends AppStateA {
 
   TherapySessionDoneState(this.done);
 }
+
+// Dna Laboratory
+
+class DnaLabLoadingState extends AppStateA {}
+
+class DnaLabErrorState extends AppStateA {
+  final String error;
+
+  DnaLabErrorState(this.error);
+}
+
+class DnaLabDoneState extends AppStateA {
+  final String done;
+
+  DnaLabDoneState(this.done);
+}

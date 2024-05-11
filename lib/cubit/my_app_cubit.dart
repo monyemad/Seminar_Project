@@ -10,6 +10,18 @@ import 'package:image_picker/image_picker.dart';
 class AppCubitA extends Cubit<AppStateA> {
   AppCubitA() : super(MyAppInitial());
 
+  String? userId;
+
+  Future<void> saveVariable(String userId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userId);
+  }
+
+  Future<String?> getVariable() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
   Future<void> getDataFromFirebase(
     String name,
     String email,
@@ -83,13 +95,6 @@ class AppCubitA extends Cubit<AppStateA> {
     }
   }
 
-  String? userId;
-
-  Future<void> saveVariable(String userId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userId', userId);
-  }
-
   Future<void> logIn({
     required String password,
     required String email,
@@ -130,10 +135,10 @@ class AppCubitA extends Cubit<AppStateA> {
     try {
       emit(ResetLoadingState());
       Map<String, dynamic> userData = {
-        'username': username,
         'email': email,
+        'username': username,
         'password': password,
-        'confirmPassword': confirmpassword,
+        'confirmpassword': confirmpassword,
       };
       final response = await http.put(
         Uri.parse(
@@ -150,15 +155,11 @@ class AppCubitA extends Cubit<AppStateA> {
             "Failed to reset user. Status code: ${response.statusCode}"));
       }
     } catch (e) {
-      print('Error: ${e.toString()}');
-      emit(ResetErrorState(e.toString()));
+      print('Error: ${e}');
+      emit(ResetErrorState('Error: ${e}'));
     }
   }
 
-  Future<String?> getVariable() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userId');
-  }
 
   Future<void> foundCase({
     required String age,
@@ -180,8 +181,9 @@ class AppCubitA extends Cubit<AppStateA> {
     required String report,
     required String gender,
     required String national,
+    required String image,
     required String dna,
-    required String childDna,
+    required String childdna,
     required String result,
   }) async {
     try {
@@ -212,8 +214,9 @@ class AppCubitA extends Cubit<AppStateA> {
         "volunteer_national_id": national,
         "volunteer_gender": gender,
         "has_official_report": report,
-        "parentDna-id": dna,
-        "childDna-id": childDna,
+        "image": image,
+        "volunteerDNA_id": dna,
+        "childDNA_id": childdna,
         "results": result,
       };
       var response = await http.post(
@@ -230,7 +233,7 @@ class AppCubitA extends Cubit<AppStateA> {
             "Failed to created.Status code: ${response.statusCode}"));
       }
     } catch (e) {
-      print('Error: ${e.toString()}');
+      print('Error: ${e}');
       emit(FoundCaseErrorState(e.toString()));
     }
   }
@@ -259,6 +262,7 @@ class AppCubitA extends Cubit<AppStateA> {
     required String dna,
     required String childDna,
     required String result,
+    required String image,
   }) async {
     try {
       emit(MissingCaseLoadingState());
@@ -270,6 +274,7 @@ class AppCubitA extends Cubit<AppStateA> {
       }
       Map<String, String> userData = {
         "child_name": childname,
+        "imageUrl": image,
         "child_age": age,
         "child_gender": childgender,
         "child_health_state": healthstate,
@@ -289,8 +294,8 @@ class AppCubitA extends Cubit<AppStateA> {
         "reporter_relative_relation": relation,
         "reporter_gender": gender,
         "record_number": record,
-        "parentDna-id": dna,
-        "childDna-id": childDna,
+        "parentDNA-Id": dna,
+        "childDNA-Id": childDna,
         "results": result,
       };
       var response = await http.post(
@@ -313,10 +318,17 @@ class AppCubitA extends Cubit<AppStateA> {
   }
 
   Future<void> therapySession({
-    required String fullname,
+    required String name,
+    required String age,
+    required String gender,
+    required String contactNumber,
     required String email,
-    required String phone,
     required String date,
+    required String appointment,
+    required String where,
+    required String subjectDetails,
+    required String status,
+    required String feedback,
   }) async {
     try {
       emit(TherapySessionLoadingState());
@@ -327,17 +339,24 @@ class AppCubitA extends Cubit<AppStateA> {
         return;
       }
       Map<String, String> userData = {
-        "fullname": fullname,
+        "name": name,
+        "age": age,
+        "gender": gender,
+        "contactNumber": contactNumber,
         "email": email,
-        "phone": phone,
         "date": date,
+        "appointment": appointment,
+        "where": where,
+        "subjectDetails": subjectDetails,
+        "status": status,
+        "feedback": feedback,
       };
-      var response = await http.post(
+      final response = await http.post(
           Uri.parse(
               'https://sa3edny-backend-nodejs.onrender.com/theropySession/createReq/$userId'),
           body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         emit(TherapySessionDoneState("child created successfully"));
       } else {
         emit(TherapySessionErrorState(
@@ -348,66 +367,82 @@ class AppCubitA extends Cubit<AppStateA> {
     }
   }
 
-  ImagePicker picker = ImagePicker();
-  File? img;
-
-  Future<void> pickImage() async {
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      img = File(image.path);
-      foundUploadImage(File(image.path));
-      emit(PickImageState());
-    } else {
-      print("null img");
-    }
-  }
-
-  // Future<void> _fetchProfileImage() async {
-  //   try {
-  //     final response = await http.get(
+  // ImagePicker picker = ImagePicker();
+  // File? img;
+  //
+  // Future<void> foundUploadImage() async {
+  //   if (img != null) {
+  //     var request = http.MultipartRequest(
+  //       'POST',
   //       Uri.parse(
-  //           'https://sa3edny-backend-nodejs.onrender.com/user/updateUser/$userId'),
+  //           'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
   //     );
+  //
+  //     List<int> bytes = await img!.readAsBytes();
+  //     var image = http.MultipartFile.fromBytes('image', bytes);
+  //     request.files.add(image);
+  //
+  //     var response = await request.send();
+  //
   //     if (response.statusCode == 200) {
-  //       // setState(() {
-  //       //   _imageUrl = response.body;
-  //       // });
+  //       // Image uploaded successfully
+  //       print('Image uploaded successfully');
   //     } else {
-  //       print(
-  //           'Failed to fetch profile image. Status code: ${response.statusCode}');
+  //       // Error uploading image
+  //       print('Error uploading image: ${response.reasonPhrase}');
   //     }
-  //   } catch (e) {
-  //     print('Error fetching profile image: $e');
+  //   }
+  // }
+  //
+  // Future<void> pickImage() async {
+  //   final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  //   if (image != null) {
+  //     img = File(image.path);
+  //     foundUploadImage();
+  //   } else {
+  //     print("null img");
   //   }
   // }
 
-  Future<void> foundUploadImage(File image) async {
-    try {
-      emit(UploadLoadingState());
-      List<int> imageBytes = image.readAsBytesSync();
-      String base64Image = base64Encode(imageBytes);
-      final response = await http.put(
-        Uri.parse(
-            'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
-        body: {
-          'image': base64Image,
-        },
-      );
-      if (response.statusCode == 200) {
-        print('Image uploaded successfully');
-        emit(UploadDoneState());
-      } else {
-        print('Failed to upload image. Status code: ${response.statusCode}');
-        emit(UploadErrorState(
-            'Failed to upload image. Status code: ${response.statusCode}'));
-      }
-    } catch (e) {
-      print('Error uploading image: $e');
-      emit(UploadErrorState('Error uploading image: $e'));
-    }
-  }
 
-  Future<void> dnaData() async{
-    try{}catch(e){}
+  Future<void> dnaData({
+    required String name,
+    required String gender,
+    required String age,
+    required String address,
+    required String type,
+    required String email,
+    required String phone,
+    required String lab,
+    required String branch,
+    required String appointment,
+}) async{
+    try{
+      emit(DnaLabLoadingState());
+      Map<String, String> userData = {
+        'patient_name': name,
+        'patient_gender': gender,
+        'patient_age': age,
+        'patient_address': address,
+        'patient_type': type,
+        'contact_email': email,
+        'contact_phone_number': phone,
+        'lab': lab,
+        'lab_branch': branch,
+        'appointment': appointment,
+      };
+      final response = await http.post(
+          Uri.parse("https://sa3edny-backend-nodejs.onrender.com/lab/createLab"),
+        body: convert.jsonEncode(userData),
+          headers: {"Content-type": "application/json"});
+    if (response.statusCode == 200) {
+    emit(DnaLabDoneState("dna lab created successfully"));
+    } else {
+    emit(DnaLabErrorState(
+    "Failed to created.Status code: ${response.statusCode}"));
+    }
+    } catch (e) {
+    emit(DnaLabErrorState(e.toString()));
+    }
   }
 }
