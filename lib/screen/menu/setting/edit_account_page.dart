@@ -31,120 +31,159 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const CustomBgColor(),
-          SingleChildScrollView(
-            child: Form(
-              key: formkey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CustomPop(bottom: 70,),
-                  CustomTextFormField(
-                    hintText: 'Name',
-                    controller: name,
-                    keyboardType: TextInputType.name,
-                    prefixIcon: Icons.person_rounded,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: 'UserName',
-                    controller: username,
-                    keyboardType: TextInputType.name,
-                    prefixIcon: Icons.person_rounded,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: 'Email',
-                    controller: email,
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.email_rounded,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: 'Phone number',
-                    controller: phoneNumber,
-                    keyboardType: TextInputType.phone,
-                    prefixIcon: Icons.phone_rounded,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: 'Gender',
-                    controller: gender,
-                    keyboardType: TextInputType.text,
-                    prefixIcon: Icons.face,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: 'Password',
-                    controller:password,
-                    keyboardType: TextInputType.visiblePassword,
-                    prefixIcon: Icons.lock_rounded,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: 'Age',
-                    controller:age,
-                    keyboardType: TextInputType.number,
-                    prefixIcon: Icons.numbers_rounded,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      userController.updateUserData();
-                      if(formkey.currentState!.validate()){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: AwesomeSnackbarContent(
-                              title: 'Success',
-                              message: "user is updated successfully",
-                              contentType: ContentType.success,
-                              // color: const Color(0xffC40C0C),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            const CustomBgColor(),
+            SingleChildScrollView(
+              child: Form(
+                key: formkey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CustomPop(
+                      bottom: 70,
+                    ),
+                    CustomTextFormField(
+                      hintText: 'Name',
+                      controller: name,
+                      keyboardType: TextInputType.name,
+                      prefixIcon: Icons.person_rounded,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'value must not be empty';
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: 'UserName',
+                      controller: username,
+                      keyboardType: TextInputType.name,
+                      prefixIcon: Icons.person_rounded,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'value must not be empty';
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: 'Email',
+                      controller: email,
+                      keyboardType: TextInputType.emailAddress,
+                      prefixIcon: Icons.email_rounded,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'value must not be empty';
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: 'Phone number',
+                      controller: phoneNumber,
+                      keyboardType: TextInputType.phone,
+                      prefixIcon: Icons.phone_rounded,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'value must not be empty';
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: 'Gender',
+                      controller: gender,
+                      keyboardType: TextInputType.text,
+                      prefixIcon: Icons.face,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'value must not be empty';
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: 'Password',
+                      controller: password,
+                      keyboardType: TextInputType.visiblePassword,
+                      prefixIcon: Icons.lock_rounded,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'value must not be empty';
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: 'Age',
+                      controller: age,
+                      keyboardType: TextInputType.number,
+                      prefixIcon: Icons.numbers_rounded,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'value must not be empty';
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        userController.updateUserData();
+                        if (formkey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                title: 'Success',
+                                message: "user is updated successfully",
+                                contentType: ContentType.success,
+                                // color: const Color(0xffC40C0C),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
                             ),
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                          ),
-                        );
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                              return const HomeScreen();
-                            }));
-                      }else{
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: CustomSnackBarError(
-                              message: "user must enter all the data first",
+                          );
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const HomeScreen();
+                          }));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: CustomSnackBarError(
+                                message: "user must enter all the data first",
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
                             ),
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('update data'),
-                  ),
-                ],
+                          );
+                        }
+                      },
+                      child: const Text('update data'),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

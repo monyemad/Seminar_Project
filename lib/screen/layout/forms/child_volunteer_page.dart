@@ -52,43 +52,38 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
   TextEditingController address = TextEditingController();
   TextEditingController currentaddress = TextEditingController();
 
+  TextEditingController dna = TextEditingController();
+  TextEditingController childdna = TextEditingController();
+  TextEditingController results = TextEditingController();
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   ImagePicker picker = ImagePicker();
-  File? img;
+  File? image;
 
-  Future<void> foundUploadImage() async {
-    if (img != null) {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
-      );
+  // List<XFile> pickedImages = [];
 
-      List<int> bytes = await img!.readAsBytes();
-      var image = http.MultipartFile.fromBytes('image', bytes);
-      request.files.add(image);
-
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
-        // Image uploaded successfully
-        print('Image uploaded successfully');
-      } else {
-        // Error uploading image
-        print('Error uploading image: ${response.reasonPhrase}');
-      }
+  Future<void> pickFromGallery() async {
+    try {
+      final returnedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (returnedImage == null) return;
+      setState(() {
+        image = File(returnedImage.path);
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 
-  Future<void> pickImage() async {
-    final returnedImage = await picker.pickImage(source: ImageSource.camera);
-
-    if (returnedImage == null) return;
-    setState(() {
-      img = File(returnedImage.path);
-    });
-  }
+  // Future<void> pickImage() async {
+  //   final returnedImage = await picker.pickImage(source: ImageSource.camera);
+  //
+  //   if (returnedImage == null) return;
+  //   setState(() {
+  //     img = File(returnedImage.path);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -127,13 +122,13 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                     ),
                     Stack(
                       children: [
-                        img != null
-                            ? Image.file(img!)
-                            : Image.asset(
+                        image == null
+                            ? Image.asset(
                                 'assets/images/child (2).png',
-                                // height: 150,
+                                height: 150,
                                 width: 150,
-                              ),
+                              )
+                            : Image.file(image!,width: 150,height: 150,),
                         Positioned(
                           bottom: 0,
                           right: 0,
@@ -148,9 +143,7 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: IconButton(
-                                onPressed: () {
-                                  pickImage();
-                                },
+                                onPressed: pickFromGallery,
                                 icon: const Icon(Icons.camera_alt)),
                           ),
                         )
@@ -479,10 +472,10 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                                       clothes: clothes.text,
                                       mark: mark.text,
                                       report: widget.report.toString(),
-                                      image: img.toString(),
-                                      dna: '',
-                                      childdna: '',
-                                      result: '',
+                                      image: image.toString(),
+                                      dna: dna.text,
+                                      childdna: childdna.text,
+                                      result: results.text,
                                     );
                               }
                             },

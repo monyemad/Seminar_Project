@@ -27,6 +27,7 @@ class DnaScreen extends StatelessWidget {
                     height: 60,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
                         child: const Image(
@@ -65,6 +66,7 @@ class DnaScreen extends StatelessWidget {
                     height: 40,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
                         child: const Image(

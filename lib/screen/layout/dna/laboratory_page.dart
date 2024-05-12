@@ -3,6 +3,7 @@ import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/layout/home_page.dart';
 import 'package:final_project/widgets/date_and_time/custom_date.dart';
+import 'package:final_project/widgets/date_and_time/custom_time.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:final_project/widgets/select_and_radio/custom_select.dart';
 import 'package:final_project/widgets/select_and_radio/custom_radio.dart';
@@ -32,17 +33,14 @@ class _LaboratoryScreenState extends State<LaboratoryScreen> {
   TextEditingController age = TextEditingController();
   TextEditingController appointment = TextEditingController();
 
-  DateTime dateTime = DateTime.now();
+  TimeOfDay _timeOfDay = const TimeOfDay(hour: 10, minute: 30);
 
-  void _showDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2024),
-            lastDate: DateTime(2030))
-        .then((value) {
+  void _showTimePicker() {
+    showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now()).then((value) {
       setState(() {
-        dateTime = value!;
+        _timeOfDay = value!;
       });
     });
   }
@@ -251,11 +249,9 @@ class _LaboratoryScreenState extends State<LaboratoryScreen> {
                       const SizedBox(
                         height: 8,
                       ),
-                      CustomDate(
-                        text:
-                            '${dateTime.day},${dateTime.month},${dateTime.year}',
-                        onPressed: _showDatePicker,
-                      ),
+                      CustomTime(
+                          text: _timeOfDay.format(context).toString(),
+                          onPressed: _showTimePicker),
                       const SizedBox(
                         height: 20,
                       ),
@@ -314,7 +310,7 @@ class _LaboratoryScreenState extends State<LaboratoryScreen> {
                                         phone: phone.text,
                                         lab: lab.toString(),
                                         branch: branch.toString(),
-                                        appointment: dateTime.toString(),
+                                        appointment: _timeOfDay.toString(),
                                       );
                                 }
                               },

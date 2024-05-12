@@ -72,14 +72,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: name,
                         prefixIcon: Icons.account_circle_rounded,
                         keyboardType: TextInputType.name,
-                        validate: (name) => name!.length < 4
-                            ? 'Name should be at least 4 characters'
+                        validate: (name) => name!.isEmpty
+                            ? 'Name must not be empty'
                             : null,
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      const CustomText(text: 'Username:'),
+                      const CustomText(text: 'UserName:'),
                       const SizedBox(
                         height: 8,
                       ),
@@ -88,8 +88,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: username,
                         prefixIcon: Icons.account_circle_rounded,
                         keyboardType: TextInputType.name,
-                        validate: (username) => username!.length < 8
-                            ? 'Name should be at least 8 characters'
+                        validate: (username) => username!.isEmpty
+                            ? 'UserName must not be empty'
                             : null,
                       ),
                       const SizedBox(
@@ -119,7 +119,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isObscureText: tek,
                         keyboardType: TextInputType.visiblePassword,
                         prefixIcon: Icons.lock_rounded,
-                        // prefixIcon: const Icon(Icons.key_rounded),
                         suffixIcon: IconButton(
                           icon: tek ? visableoff : visable,
                           onPressed: () {
@@ -131,11 +130,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validate: (value) {
                           if (value!.isEmpty) {
                             return 'password must not be empty';
-                          } else if (RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{6,}$')
-                              .hasMatch(value)) {
-                            return null;
                           }
-                          return 'Please enter a password';
+                          // else if (RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{6,}$')
+                          //     .hasMatch(value)) {
+                          //   return null;
+                          // }
+                          return null;
                         },
                       ),
                       const SizedBox(

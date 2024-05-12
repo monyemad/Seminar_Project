@@ -1,7 +1,5 @@
-// import 'package:final_project/widgets/custom_profile.dart';
+import 'package:final_project/screen/layout/home_page.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
-// import 'package:final_project/widgets/custom_pop.dart';
-// import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/controllers/user_controller.dart';
 import 'package:get/get.dart';
@@ -19,7 +17,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   UserController userController = Get.put(UserController());
 
   TextEditingController name = TextEditingController();
-  // TextEditingController userId = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -92,6 +89,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ElevatedButton(
                     onPressed: () {
                       userController.fetchUserData();
+                        // Navigator.pushReplacement(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //       return const HomeScreen();
+                        //     }));
                     },
                     child: const Text('get data'),
                   ),

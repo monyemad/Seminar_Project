@@ -20,7 +20,7 @@ class CustomDate extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-                onPressed: onPressed, icon: const Icon(Icons.timelapse_rounded)),
+                onPressed: onPressed, icon: const Icon(Icons.date_range_rounded)),
             const SizedBox(
               width: 15,
             ),
