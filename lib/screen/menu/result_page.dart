@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 
 class AiModelResultScreen extends StatelessWidget {
   const AiModelResultScreen(
-      {super.key, this.result, this.isMale, this.age, this.name});
+      {super.key, this.result,});
 
   final int? result;
-  final String? name;
-  final bool? isMale;
-  final int? age;
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,29 +34,7 @@ class AiModelResultScreen extends StatelessWidget {
                     height: 30,
                   ),
                   Text(
-                    'Name: $name',
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Text(
-                    'Gender: ',
-                    // '${isMale ? 'Male' : 'Female'}',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
                     'Result: $result',
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Age: $age',
                     style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,

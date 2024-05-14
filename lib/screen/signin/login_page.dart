@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                           return const ForgotPasswordScreen();
                                                         }));
                                               },
-                                              child: const Text("Parent")),
+                                              child: const Text("PARENT")),
                                           TextButton(
                                               onPressed: () {
                                                 Navigator.push(context,

@@ -256,41 +256,6 @@ class _VolunteerHomeScreenState extends State<VolunteerHomeScreen> {
                       },
                       image: "assets/images/help.gif",
                       text: 'Help Center'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const VolunteerSupportScreen();
-                          }));
-                        },
-                        child: const Text(
-                          "Help Center",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const VolunteerSupportScreen();
-                          }));
-                        },
-                        child: const CircleAvatar(
-                          radius: 80,
-                          backgroundColor: Colors.white30,
-                          child: CircleAvatar(
-                            radius: 75,
-                            backgroundImage:
-                                AssetImage("assets/images/help.gif"),
-                            backgroundColor: Colors.white38,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(
                     height: 40,
                   ),

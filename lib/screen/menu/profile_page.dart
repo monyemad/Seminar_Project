@@ -12,19 +12,19 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  @override
-  void initState() {
-    if (DataSource.isLoadingProfile) {
-      Future.delayed(Duration.zero, () async {
-        var data = await DataSource.profileData();
-        setState(() {
-          DataSource.userData = data;
-          DataSource.isLoadingProfile = false;
-        });
-      });
-    }
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   if (DataSource.isLoadingProfile) {
+  //     Future.delayed(Duration.zero, () async {
+  //       var data = await DataSource.profileData();
+  //       setState(() {
+  //         DataSource.userData = data;
+  //         DataSource.isLoadingProfile = false;
+  //       });
+  //     });
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +74,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                             ),
                           ),
-                          child: ListTile(
+                          child: const ListTile(
                             style: ListTileStyle.list,
                             title: Text(
-                              DataSource.userData!.name,
+                              // DataSource.userData!.name,
+                              ''
                             ),
-                            leading: const Text(
+                            leading: Text(
                               'Name:',
                               style: TextStyle(
                                   fontSize: 18, fontStyle: FontStyle.italic),
@@ -98,12 +99,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                             ),
                           ),
-                          child: ListTile(
+                          child: const ListTile(
                             style: ListTileStyle.list,
                             title: Text(
-                              DataSource.userData!.phoneNumber,
+                              // DataSource.userData!.phoneNumber,
+                              ''
                             ),
-                            leading: const Text(
+                            leading: Text(
                               'Phone Number:',
                               style: TextStyle(
                                   fontSize: 18, fontStyle: FontStyle.italic),
@@ -122,12 +124,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                             ),
                           ),
-                          child: ListTile(
+                          child: const ListTile(
                             style: ListTileStyle.list,
                             title: Text(
-                              DataSource.userData!.age,
+                              // DataSource.userData!.age,
+                              ''
                             ),
-                            leading: const Text(
+                            leading: Text(
                               'Age:',
                               style: TextStyle(
                                   fontSize: 18, fontStyle: FontStyle.italic),
@@ -146,15 +149,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                             ),
                           ),
-                          child: ListTile(
+                          child: const ListTile(
                             style: ListTileStyle.list,
                             title: Text(
-                              DataSource
-                                  .userData!
-                                  .gender
-                                  .toString(),
+                              // DataSource
+                              //     .userData!
+                              //     .gender
+                              //     .toString(),
+                              ''
                             ),
-                            leading: const Text(
+                            leading: Text(
                               'Gender:',
                               style: TextStyle(
                                   fontSize: 18, fontStyle: FontStyle.italic),
@@ -173,12 +177,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                             ),
                           ),
-                          child: ListTile(
+                          child: const ListTile(
                             style: ListTileStyle.list,
                             title: Text(
-                              DataSource.userData!.email,
+                              // DataSource.userData!.email,
+                              ''
                             ),
-                            leading: const Text(
+                            leading: Text(
                               'Email:',
                               style: TextStyle(
                                   fontSize: 18, fontStyle: FontStyle.italic),
