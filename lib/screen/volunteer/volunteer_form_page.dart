@@ -1,4 +1,4 @@
-import 'package:final_project/screen/layout/forms/child_parent_page.dart';
+import 'package:final_project/screen/volunteer/child_volunteer_page.dart';
 import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/select_and_radio/custom_radio.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
@@ -6,22 +6,21 @@ import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
 
-class ParentScreen extends StatefulWidget {
-  const ParentScreen({super.key});
+class VolunteerScreen extends StatefulWidget {
+  const VolunteerScreen({super.key});
 
   @override
-  State<ParentScreen> createState() => _ParentScreenState();
+  State<VolunteerScreen> createState() => _VolunteerScreenState();
 }
 
-class _ParentScreenState extends State<ParentScreen> {
+class _VolunteerScreenState extends State<VolunteerScreen> {
   String? gender;
+  String? report;
 
-  TextEditingController address = TextEditingController();
   TextEditingController fullname = TextEditingController();
   TextEditingController phone = TextEditingController();
-  TextEditingController relation = TextEditingController();
+  TextEditingController volunteeraddress = TextEditingController();
   TextEditingController national = TextEditingController();
-  TextEditingController record = TextEditingController();
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
@@ -32,14 +31,14 @@ class _ParentScreenState extends State<ParentScreen> {
         child: Stack(
           children: [
             const CustomBgColor(),
-            Form(
-              key: formkey,
-              child: SingleChildScrollView(
+            SingleChildScrollView(
+              child: Form(
+                key: formkey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Fill in the data",
+                      'Fill in the data',
                       style:
                           TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                     ),
@@ -47,7 +46,7 @@ class _ParentScreenState extends State<ParentScreen> {
                       height: 10,
                     ),
                     const Text(
-                      "Parent information",
+                      "Volunteer information",
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -58,43 +57,41 @@ class _ParentScreenState extends State<ParentScreen> {
                       endIndent: 10,
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     const CustomText(text: 'Full Name:'),
                     const SizedBox(
                       height: 8,
                     ),
                     CustomTextFormField(
-                        hintText: "Enter your Full Name",
+                        hintText: "Enter your full Name",
+                        prefixIcon: Icons.person_rounded,
                         controller: fullname,
-                        prefixIcon: Icons.person,
-                        keyboardType: TextInputType.name,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'fullname must not be empty';
-                        }
-                        return null;
-                      },
-                    ),
+                        validate: (value) {
+                          if (value!.isEmpty) {
+                            return 'full name must not be empty';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.name),
                     const SizedBox(
                       height: 20,
                     ),
-                    const CustomText(text: 'Phone Number:'),
+                    const CustomText(text: 'Phone number:'),
                     const SizedBox(
                       height: 8,
                     ),
                     CustomTextFormField(
-                        hintText: "Enter your phone Number",
-                        controller: phone,
+                        hintText: "Enter your Phone number",
                         prefixIcon: Icons.phone_rounded,
-                        keyboardType: TextInputType.phone,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return ' must not be empty';
-                        }
-                        return null;
-                      },
-                    ),
+                        controller: phone,
+                        validate: (value) {
+                          if (value!.isEmpty) {
+                            return 'phone number must not be empty';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.phone),
                     const SizedBox(
                       height: 20,
                     ),
@@ -103,17 +100,16 @@ class _ParentScreenState extends State<ParentScreen> {
                       height: 8,
                     ),
                     CustomTextFormField(
-                        hintText: "Enter your Address",
-                        controller: address,
-                        prefixIcon: Icons.house_rounded,
-                        keyboardType: TextInputType.streetAddress,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return ' must not be empty';
-                        }
-                        return null;
-                      },
-                    ),
+                        hintText: "Enter Your Address",
+                        controller: volunteeraddress,
+                        prefixIcon: Icons.home_rounded,
+                        validate: (value) {
+                          if (value!.isEmpty) {
+                            return 'address must not be empty';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.streetAddress),
                     const SizedBox(
                       height: 20,
                     ),
@@ -124,34 +120,14 @@ class _ParentScreenState extends State<ParentScreen> {
                     CustomTextFormField(
                         hintText: "Enter your National number",
                         controller: national,
-                        prefixIcon: Icons.confirmation_number_rounded,
-                        keyboardType: TextInputType.number,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return ' must not be empty';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const CustomText(text: 'Relative Relation:'),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    CustomTextFormField(
-                        hintText: "Enter your Relative Relation",
-                        controller: relation,
-                        prefixIcon: Icons.people_alt_rounded,
-                        keyboardType: TextInputType.name,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return ' must not be empty';
-                        }
-                        return null;
-                      },
-                    ),
+                        prefixIcon: Icons.numbers_rounded,
+                        validate: (value) {
+                          if (value!.isEmpty) {
+                            return 'national number must not be empty';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.number),
                     const SizedBox(
                       height: 20,
                     ),
@@ -171,24 +147,21 @@ class _ParentScreenState extends State<ParentScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const CustomText(text: 'Record Number:'),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    CustomTextFormField(
-                        hintText: "Enter your Record number",
-                        controller: record,
-                        prefixIcon: Icons.numbers_rounded,
-                        keyboardType: TextInputType.number,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return ' must not be empty';
-                        }
-                        return null;
+                    CustomRadio(
+                      text: "Has an official report:",
+                      title: "Yes",
+                      value: 'Yes',
+                      groupValue: report,
+                      title1: "No",
+                      value1: "No",
+                      onChange: (value) {
+                        setState(() {
+                          report = value;
+                        });
                       },
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 20,
                     ),
                     CustomButton(
                         text: 'Next',
@@ -196,13 +169,12 @@ class _ParentScreenState extends State<ParentScreen> {
                           if (formkey.currentState!.validate()) {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return ChildScreen(
+                              return ChildVolunteerScreen(
                                 fullname: fullname.text,
                                 phone: phone.text,
-                                address: address.text,
+                                volunteeraddress: volunteeraddress.text,
                                 national: national.text,
-                                record: record.text,
-                                relation: relation.text,
+                                report: report.toString(),
                                 gender: gender.toString(),
                               );
                             }));
@@ -220,5 +192,4 @@ class _ParentScreenState extends State<ParentScreen> {
       ),
     );
   }
-  
 }

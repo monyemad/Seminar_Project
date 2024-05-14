@@ -47,21 +47,21 @@ class _SettingScreenState extends State<SettingScreen> {
               const SizedBox(
                 height: 25,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const Text(
-                    'Language',
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.arrow_forward_rounded)),
-                ],
-              ),
-              const SizedBox(
-                height: 25,
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     const Text(
+              //       'Language',
+              //       style: TextStyle(fontSize: 25),
+              //     ),
+              //     IconButton(
+              //         onPressed: () {},
+              //         icon: const Icon(Icons.arrow_forward_rounded)),
+              //   ],
+              // ),
+              // const SizedBox(
+              //   height: 25,
+              // ),
               CustomSetting(
                 onPressed: () {
                   Navigator.pushReplacement(context,

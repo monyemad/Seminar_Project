@@ -1,29 +1,96 @@
-import 'package:final_project/screen/layout/aging_page.dart';
+import 'dart:io';
+
+import 'package:final_project/screen/menu/policies_page.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:final_project/screen/layout/dna/dna_page.dart';
 import 'package:final_project/screen/layout/forms/parent_form_page.dart';
-import 'package:final_project/screen/volunteer/volunteer_form_page.dart';
-import 'package:final_project/screen/layout/matching_page.dart';
 import 'package:final_project/screen/menu/complain.dart';
-import 'package:final_project/screen/menu/profile_page.dart';
-import 'package:final_project/screen/menu/result_page.dart';
 import 'package:final_project/screen/menu/setting/setting_page.dart';
-import 'package:final_project/screen/menu/support_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_support_page.dart';
 import 'package:final_project/widgets/home/custom_home(ltr).dart';
 import 'package:final_project/widgets/home/custom_home(rtl).dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class HomeScreen extends StatefulWidget {
+class VolunteerHomeScreen extends StatefulWidget {
   final String username;
   final String email;
-  const HomeScreen({super.key, required this.username, required this.email});
+
+  const VolunteerHomeScreen(
+      {super.key, required this.username, required this.email});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<VolunteerHomeScreen> createState() => _VolunteerHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _VolunteerHomeScreenState extends State<VolunteerHomeScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
+  ImagePicker picker = ImagePicker();
+  File? img;
+
+  Future<void> pickFromGallery() async {
+    try {
+      final returnedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (returnedImage == null) return;
+      setState(() {
+        img = File(returnedImage.path);
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // File? _imageFile;
+  //
+  // Future<void> uploadImage() async {
+  //   if (_imageFile != null) {
+  //     var request = http.MultipartRequest(
+  //       'POST',
+  //       Uri.parse('http://your-server-url.com/upload'),
+  //     );
+  //
+  //     var image = await http.MultipartFile.fromPath('image', _imageFile!.path);
+  //     request.files.add(image);
+  //
+  //     var response = await request.send();
+  //
+  //     if (response.statusCode == 200) {
+  //       // Image uploaded successfully
+  //       print('Image uploaded successfully');
+  //     } else {
+  //       // Error uploading image
+  //       print('Error uploading image: ${response.reasonPhrase}');
+  //     }
+  //   }
+  // }
+
+  File? imageFile;
+
+  Future<void> foundUploadImage() async {
+    if (imageFile != null) {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('http://your-server-url.com/upload'),
+      );
+
+      var image = await http.MultipartFile.fromPath('image', imageFile!.path);
+      request.files.add(image);
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Image uploaded successfully
+        print('Image uploaded successfully');
+      } else {
+        // Error uploading image
+        print('Error uploading image: ${response.reasonPhrase}');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: const Text('UserName'),
-              accountEmail: const Text('Example@gmail.com'),
+              accountName: Text(widget.username),
+              accountEmail: Text(widget.email),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
                   child: Image.asset(
@@ -55,15 +122,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     fit: BoxFit.cover),
               ),
             ),
+            const Divider(),
             ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
+              leading: const Icon(Icons.share),
+              title: const Text('share'),
+              onTap: () {},
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.file_copy),
+              title: const Text('Policies'),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ProfileScreen();
+                  return const PolicyScreen();
                 }));
               },
             ),
+            // ListTile(
+            //   leading: const Icon(Icons.person),
+            //   title: const Text('Profile'),
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return const ProfileScreen();
+            //     }));
+            //   },
+            // ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.settings),
@@ -74,38 +157,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 }));
               },
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.support_agent_rounded),
-              title: const Text('Support'),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const SupportScreen();
-                }));
-              },
-              // trailing: ClipOval(
-              //   child: Container(
-              //     color: Colors.red,
-              //     width: 20,
-              //     height: 20,
-              //     child: const Center(
-              //       child: Text(
-              //         '0',
-              //         style: TextStyle(fontSize: 12, color: Colors.white),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-            ),
-            const Divider(),
-            ListTile(
-                leading: const Icon(Icons.bloodtype_rounded),
-                title: const Text('Test_Results'),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const AiModelResultScreen();
-                  }));
-                }),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.report_rounded),
@@ -174,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           return const ParentScreen();
                                         }));
                                       },
-                                      child: const Text("MISSING")),
+                                      child: const Text("FOUND")),
                                 ],
                               );
                             });
@@ -200,23 +251,48 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const EvolutionScreen();
+                          return const VolunteerSupportScreen();
                         }));
                       },
-                      image: "assets/images/fea evo.gif",
-                      text: 'Features\nEvolution'),
+                      image: "assets/images/help.gif",
+                      text: 'Help Center'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const VolunteerSupportScreen();
+                          }));
+                        },
+                        child: const Text(
+                          "Help Center",
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const VolunteerSupportScreen();
+                          }));
+                        },
+                        child: const CircleAvatar(
+                          radius: 80,
+                          backgroundColor: Colors.white30,
+                          child: CircleAvatar(
+                            radius: 75,
+                            backgroundImage:
+                                AssetImage("assets/images/help.gif"),
+                            backgroundColor: Colors.white38,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 40,
-                  ),
-                  CustomHome(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const RecognitionScreen();
-                      }));
-                    },
-                    image: 'assets/images/face reco.gif',
-                    text: 'Image\nRecognition',
                   ),
                 ],
               ),

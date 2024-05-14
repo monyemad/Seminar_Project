@@ -1,6 +1,6 @@
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
-import 'package:final_project/screen/signin/password/Success_page.dart';
+import 'package:final_project/screen/signin/password/success_page.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
@@ -9,9 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  final String username;
   final String email;
-  const ResetPasswordScreen({super.key, required this.username, required this.email});
+  const ResetPasswordScreen({super.key, required this.email});
 
   @override
   State<ResetPasswordScreen> createState() => _RestPasswordScreenState();
@@ -62,7 +61,7 @@ class _RestPasswordScreenState extends State<ResetPasswordScreen> {
                         height: 8,
                       ),
                       CustomTextFormField(
-                        hintText: "Enter your ner password",
+                        hintText: "Enter your new password",
                         controller: password,
                         isObscureText: tek,
                         keyboardType: TextInputType.visiblePassword,
@@ -116,15 +115,6 @@ class _RestPasswordScreenState extends State<ResetPasswordScreen> {
                       const SizedBox(
                         height: 50,
                       ),
-                      // CustomButton(
-                      //     text: "Save",
-                      //     onPressed: () {
-                      //       Navigator.pushReplacement(context,
-                      //           MaterialPageRoute(builder: (context) {
-                      //             return const SuccessScreen();
-                      //           }));
-                      //     }),
-
                       BlocConsumer<AppCubitA, AppStateA>(
                         listener: (context, state) {
                           if (state is ResetErrorState) {
@@ -160,8 +150,7 @@ class _RestPasswordScreenState extends State<ResetPasswordScreen> {
                                   await context.read<AppCubitA>().resetPwd(
                                       password: password.text,
                                       confirmpassword: confirmpassword.text,
-                                      email: widget.email,
-                                      username: widget.username);
+                                      email: widget.email,);
                                 }
                               },
                               child: state is ResetLoadingState

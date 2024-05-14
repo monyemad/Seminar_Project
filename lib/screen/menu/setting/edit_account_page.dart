@@ -161,7 +161,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                           );
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                            return const HomeScreen();
+                            return const HomeScreen(username: '', email: '',);
                           }));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(

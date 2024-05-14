@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/layout/home_page.dart';
@@ -9,6 +11,7 @@ import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChildScreen extends StatefulWidget {
   final String fullname;
@@ -54,6 +57,8 @@ class _ChildScreenState extends State<ChildScreen> {
   TextEditingController age = TextEditingController();
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  File? imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +115,8 @@ class _ChildScreenState extends State<ChildScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: IconButton(
-                                  onPressed: () {
-                                    // context.read<AppCubitA>().pickImage();
-                                  },
+                                  onPressed: () =>
+                                      getImage(source: ImageSource.gallery),
                                   icon: const Icon(Icons.camera_alt)),
                             ),
                           )
@@ -388,7 +392,7 @@ class _ChildScreenState extends State<ChildScreen> {
                           } else if (state is MissingCaseDoneState) {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const HomeScreen();
+                              return const HomeScreen(username: '', email: '',);
                             }));
                           }
                         },
@@ -460,5 +464,14 @@ class _ChildScreenState extends State<ChildScreen> {
         ),
       ),
     );
+  }
+
+  void getImage({required ImageSource source}) async {
+    final file = await ImagePicker().pickImage(source: source);
+    if (file?.path != null) {
+      setState(() {
+        imageFile = File(file!.path);
+      });
+    }
   }
 }

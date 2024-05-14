@@ -48,7 +48,7 @@ class DnaScreen extends StatelessWidget {
                       ),
                       InkWell(
                         child: const Text(
-                          'Alfa\nlaboratories',
+                          'Alfa Lab',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold
@@ -87,7 +87,7 @@ class DnaScreen extends StatelessWidget {
                       ),
                       InkWell(
                         child: const Text(
-                          'Al Mokhtabar',
+                          'Al Mokhtabar Lab',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold

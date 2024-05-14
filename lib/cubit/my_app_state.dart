@@ -1,9 +1,6 @@
 abstract class AppStateA {}
 
-class MyAppInitial extends AppStateA {
-  @override
-  List<Object> get props => [];
-}
+class MyAppInitial extends AppStateA {}
 
 class LoadingState extends AppStateA {}
 
@@ -62,6 +59,23 @@ class LoginDoneState extends AppStateA {
   LoginDoneState(this.userId, this.message);
 }
 
+// VolunteerLogin
+
+class VolunteerLoginLoadingState extends AppStateA {}
+
+class VolunteerLoginErrorState extends AppStateA {
+  final String error;
+
+  VolunteerLoginErrorState(this.error);
+}
+
+class VolunteerLoginDoneState extends AppStateA {
+  final String message;
+  final String userId;
+
+  VolunteerLoginDoneState(this.userId, this.message);
+}
+
 // Reset
 
 class ResetLoadingState extends AppStateA {}
@@ -73,6 +87,18 @@ class ResetErrorState extends AppStateA {
 }
 
 class ResetDoneState extends AppStateA {}
+
+// Volunteer Reset
+
+class VolunteerResetLoadingState extends AppStateA {}
+
+class VolunteerResetErrorState extends AppStateA {
+  final String error;
+
+  VolunteerResetErrorState(this.error);
+}
+
+class VolunteerResetDoneState extends AppStateA {}
 
 // Create acc
 
@@ -89,18 +115,57 @@ class CreateDoneState extends AppStateA {
 
   CreateDoneState(this.done);
 }
+// Volunteer Create acc
 
-// Image
+class VolunteerCreateLoadingState extends AppStateA {}
 
-class UploadLoadingState extends AppStateA {}
-
-class UploadErrorState extends AppStateA {
+class VolunteerCreateErrorState extends AppStateA {
   final String error;
 
-  UploadErrorState(this.error);
+  VolunteerCreateErrorState(this.error);
 }
 
-class UploadDoneState extends AppStateA {}
+class VolunteerCreateDoneState extends AppStateA {
+  final String done;
+
+  VolunteerCreateDoneState(this.done);
+}
+
+// Image(Found)
+
+class FoundUploadLoadingState extends AppStateA {}
+
+class FoundUploadErrorState extends AppStateA {
+  final String error;
+
+  FoundUploadErrorState(this.error);
+}
+
+class FoundUploadDoneState extends AppStateA {}
+
+// Image(Missing)
+
+class MissingUploadLoadingState extends AppStateA {}
+
+class MissingUploadErrorState extends AppStateA {
+  final String error;
+
+  MissingUploadErrorState(this.error);
+}
+
+class MissingUploadDoneState extends AppStateA {}
+
+// Image(Birth)
+
+class BirthUploadLoadingState extends AppStateA {}
+
+class BirthUploadErrorState extends AppStateA {
+  final String error;
+
+  BirthUploadErrorState(this.error);
+}
+
+class BirthUploadDoneState extends AppStateA {}
 
 // Missing Case
 

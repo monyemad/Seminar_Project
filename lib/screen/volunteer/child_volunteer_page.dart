@@ -2,16 +2,18 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/layout/home_page.dart';
-import 'package:final_project/widgets/snackbar/custom_error.dart';
+import 'package:final_project/screen/volunteer/volunteer_home_page.dart';
+import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/select_and_radio/custom_select.dart';
 import 'package:final_project/widgets/select_and_radio/custom_radio.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
+import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:image_picker/image_picker.dart';
+
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
@@ -59,9 +61,7 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   ImagePicker picker = ImagePicker();
-  File? image;
-
-  // List<XFile> pickedImages = [];
+  File? img;
 
   Future<void> pickFromGallery() async {
     try {
@@ -69,21 +69,43 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
           await ImagePicker().pickImage(source: ImageSource.gallery);
       if (returnedImage == null) return;
       setState(() {
-        image = File(returnedImage.path);
+        img = File(returnedImage.path);
       });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  // Future<void> pickImage() async {
-  //   final returnedImage = await picker.pickImage(source: ImageSource.camera);
-  //
-  //   if (returnedImage == null) return;
-  //   setState(() {
-  //     img = File(returnedImage.path);
-  //   });
-  // }
+  Future<void> foundUploadImage() async {
+    if (img != null) {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
+      );
+
+      List<int> bytes = await img!.readAsBytes();
+      var image = http.MultipartFile.fromBytes('image', bytes);
+      request.files.add(image);
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully');
+      } else {
+        print('Error uploading image: ${response.reasonPhrase}');
+      }
+    }
+  }
+
+  Future<void> pickImage() async {
+    final returnedImage = await picker.pickImage(source: ImageSource.camera);
+
+    if (returnedImage == null) return;
+    setState(() {
+      img = File(returnedImage.path);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,13 +144,17 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                     ),
                     Stack(
                       children: [
-                        image == null
+                        img == null
                             ? Image.asset(
                                 'assets/images/child (2).png',
                                 height: 150,
                                 width: 150,
                               )
-                            : Image.file(image!,width: 150,height: 150,),
+                            : Image.file(
+                                img!,
+                                width: 150,
+                                height: 150,
+                              ),
                         Positioned(
                           bottom: 0,
                           right: 0,
@@ -148,6 +174,11 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                           ),
                         )
                       ],
+                    ),
+                    SizedBox(height: 6.0),
+                    TextButton(
+                      child: Text('Upload Image'),
+                      onPressed: foundUploadImage,
                     ),
                     const SizedBox(
                       height: 25,
@@ -406,6 +437,17 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                     const SizedBox(
                       height: 20,
                     ),
+                    // CustomButton(
+                    //     text: 'Next',
+                    //     onPressed: () {
+                    //       if (formkey.currentState!.validate()) {
+                    //         Navigator.push(context,
+                    //             MaterialPageRoute(builder: (context) {
+                    //               return const VolunteerHomeScreen();
+                    //             }));
+                    //       }
+                    //     }),
+
                     BlocConsumer<AppCubitA, AppStateA>(
                       listener: (context, state) {
                         if (state is FoundCaseErrorState) {
@@ -435,7 +477,10 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                           );
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                            return const HomeScreen();
+                            return const HomeScreen(
+                              username: '',
+                              email: '',
+                            );
                           }));
                         }
                       },
@@ -472,7 +517,7 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                                       clothes: clothes.text,
                                       mark: mark.text,
                                       report: widget.report.toString(),
-                                      image: image.toString(),
+                                      image: img.toString(),
                                       dna: dna.text,
                                       childdna: childdna.text,
                                       result: results.text,

@@ -1,7 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
-import 'package:final_project/screen/layout/home_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_home_page.dart';
 import 'package:final_project/widgets/date_and_time/custom_time.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:final_project/widgets/select_and_radio/custom_select.dart';
@@ -12,14 +12,14 @@ import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LaboratoryScreen extends StatefulWidget {
-  const LaboratoryScreen({super.key});
+class VolunteerLaboratoryScreen extends StatefulWidget {
+  const VolunteerLaboratoryScreen({super.key});
 
   @override
-  State<LaboratoryScreen> createState() => _LaboratoryScreenState();
+  State<VolunteerLaboratoryScreen> createState() => _VolunteerLaboratoryScreenState();
 }
 
-class _LaboratoryScreenState extends State<LaboratoryScreen> {
+class _VolunteerLaboratoryScreenState extends State<VolunteerLaboratoryScreen> {
   String? branch;
   String? lab;
   String? gender;
@@ -283,8 +283,8 @@ class _LaboratoryScreenState extends State<LaboratoryScreen> {
                             );
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const HomeScreen(username: '', email: '',);
-                            }));
+                                  return const VolunteerHomeScreen(username: '', email: '',);
+                                }));
                           }
                         },
                         builder: (context, state) {
@@ -300,32 +300,32 @@ class _LaboratoryScreenState extends State<LaboratoryScreen> {
                               onPressed: () async {
                                 if (formkey.currentState!.validate()) {
                                   await context.read<AppCubitA>().dnaData(
-                                        name: name.text,
-                                        gender: gender.toString(),
-                                        age: age.text,
-                                        address: address.text,
-                                        type: type.toString(),
-                                        email: email.text,
-                                        phone: phone.text,
-                                        lab: lab.toString(),
-                                        branch: branch.toString(),
-                                        appointment: _timeOfDay.toString(),
-                                      );
+                                    name: name.text,
+                                    gender: gender.toString(),
+                                    age: age.text,
+                                    address: address.text,
+                                    type: type.toString(),
+                                    email: email.text,
+                                    phone: phone.text,
+                                    lab: lab.toString(),
+                                    branch: branch.toString(),
+                                    appointment: _timeOfDay.toString(),
+                                  );
                                 }
                               },
                               child: state is DnaLabLoadingState
                                   ? const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    )
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
                                   : const Text(
-                                      'Submit',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ),
+                                'Submit',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
                             ),
                           );
                         },

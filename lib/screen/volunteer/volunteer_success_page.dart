@@ -1,10 +1,10 @@
-import 'package:final_project/screen/layout/home_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_home_page.dart';
 import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
 
-class SuccessScreen extends StatelessWidget {
-  const SuccessScreen({super.key});
+class VolunteerSuccessScreen extends StatelessWidget {
+  const VolunteerSuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +49,8 @@ class SuccessScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                            return const HomeScreen();
-                          }));
+                                return const VolunteerHomeScreen(username: '', email: '',);
+                              }));
                         })
                   ],
                 ),

@@ -1,8 +1,6 @@
-import 'package:final_project/screen/layout/home_page.dart';
+import 'package:final_project/data/source/source_data.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/controllers/user_controller.dart';
-import 'package:get/get.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -14,94 +12,198 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  UserController userController = Get.put(UserController());
-
-  TextEditingController name = TextEditingController();
-  TextEditingController username = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController age = TextEditingController();
-  // TextEditingController gender = TextEditingController();
-
-  // String? gender;
+  @override
+  void initState() {
+    if (DataSource.isLoadingProfile) {
+      Future.delayed(Duration.zero, () async {
+        var data = await DataSource.profileData();
+        setState(() {
+          DataSource.userData = data;
+          DataSource.isLoadingProfile = false;
+        });
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            const CustomBgColor(),
-            Container(
-              margin: const EdgeInsets.all(20),
-              child: Column(
+      body: DataSource.isLoadingProfile
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: Stack(
                 children: [
-                  TextField(
-                    controller: userController.username,
-                    decoration: const InputDecoration(hintText: 'username'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: userController.name,
-                    decoration: const InputDecoration(hintText: 'name'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: userController.phoneNumber,
-                    decoration: const InputDecoration(hintText: 'phone'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: userController.email,
-                    decoration: const InputDecoration(hintText: 'email'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: userController.gender,
-                    decoration: const InputDecoration(hintText: 'gender'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: userController.password,
-                    decoration: const InputDecoration(hintText: 'password'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: userController.age,
-                    decoration: const InputDecoration(hintText: 'age'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      userController.fetchUserData();
-                        // Navigator.pushReplacement(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //       return const HomeScreen();
-                        //     }));
-                    },
-                    child: const Text('get data'),
+                  const CustomBgColor(),
+                  Container(
+                    margin: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              style: BorderStyle.solid,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: ListTile(
+                            style: ListTileStyle.list,
+                            title: Text(
+                              DataSource.userData!.username,
+                            ),
+                            leading: const Text(
+                              'User Name:',
+                              style: TextStyle(
+                                  fontSize: 18, fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              style: BorderStyle.solid,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: ListTile(
+                            style: ListTileStyle.list,
+                            title: Text(
+                              DataSource.userData!.name,
+                            ),
+                            leading: const Text(
+                              'Name:',
+                              style: TextStyle(
+                                  fontSize: 18, fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              style: BorderStyle.solid,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: ListTile(
+                            style: ListTileStyle.list,
+                            title: Text(
+                              DataSource.userData!.phoneNumber,
+                            ),
+                            leading: const Text(
+                              'Phone Number:',
+                              style: TextStyle(
+                                  fontSize: 18, fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              style: BorderStyle.solid,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: ListTile(
+                            style: ListTileStyle.list,
+                            title: Text(
+                              DataSource.userData!.age,
+                            ),
+                            leading: const Text(
+                              'Age:',
+                              style: TextStyle(
+                                  fontSize: 18, fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              style: BorderStyle.solid,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: ListTile(
+                            style: ListTileStyle.list,
+                            title: Text(
+                              DataSource
+                                  .userData!
+                                  .gender
+                                  .toString(),
+                            ),
+                            leading: const Text(
+                              'Gender:',
+                              style: TextStyle(
+                                  fontSize: 18, fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              style: BorderStyle.solid,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: ListTile(
+                            style: ListTileStyle.list,
+                            title: Text(
+                              DataSource.userData!.email,
+                            ),
+                            leading: const Text(
+                              'Email:',
+                              style: TextStyle(
+                                  fontSize: 18, fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     userController.fetchUserData();
+                        //       // Navigator.pushReplacement(context,
+                        //       //     MaterialPageRoute(builder: (context) {
+                        //       //       return const HomeScreen();
+                        //       //     }));
+                        //   },
+                        //   child: const Text('get data'),
+                        // ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

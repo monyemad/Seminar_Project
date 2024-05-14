@@ -2,9 +2,12 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/guest/home_guest_page.dart';
+import 'package:final_project/screen/signin/register_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_forgot_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_home_page.dart';
 import 'package:final_project/screen/layout/home_page.dart';
 import 'package:final_project/screen/signin/password/forget_password_page.dart';
-import 'package:final_project/screen/signin/register_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_register_page.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
@@ -27,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var visableoff = const Icon(Icons.visibility_off_rounded);
 
   TextEditingController email = TextEditingController();
+  TextEditingController username = TextEditingController();
 
   TextEditingController password = TextEditingController();
 
@@ -34,9 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String? validateEmail(String? email) {
     RegExp emailRegex = RegExp(r'@');
-    final isEmailValid =emailRegex.hasMatch(email ?? '');
-    if(!isEmailValid){
-      return'Please enter a valid email';
+    final isEmailValid = emailRegex.hasMatch(email ?? '');
+    if (!isEmailValid) {
+      return 'Please enter a valid email';
     }
     return null;
   }
@@ -110,10 +114,36 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const ForgotPasswordScreen();
-                                }));
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        content: const Text(
+                                          "Forget Password as....",
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return const ForgotPasswordScreen();
+                                                        }));
+                                              },
+                                              child: const Text("Parent")),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return const VolunteerForgotPasswordScreen();
+                                                        }));
+                                              },
+                                              child: const Text("VOLUNTEER")),
+                                        ],
+                                      );
+                                    });
                               },
                               child: const Text(
                                 "Forgot password?",
@@ -155,8 +185,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const HomeScreen();
-                            }));
+                                  return HomeScreen(
+                                    username: username.text, email: email.text,
+                                  );
+                                }));
                           }
                         },
                         builder: (context, state) {
@@ -178,18 +210,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: state is LoginLoadingState
                                   ? const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    )
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
                                   : const Text(
-                                      "Login",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
+                                "Parent",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
                           );
                         },
@@ -197,14 +229,84 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      CustomButton(
-                          onPressed: () {
+                      BlocConsumer<AppCubitA, AppStateA>(
+                        listener: (context, state) {
+                          if (state is VolunteerLoginErrorState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: CustomSnackBarError(
+                                  message: state.error,
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                            );
+                          } else if (state is VolunteerLoginDoneState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AwesomeSnackbarContent(
+                                  title: 'Success',
+                                  message: state.message,
+                                  contentType: ContentType.success,
+                                  // color: const Color(0xffC40C0C),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                            );
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
+                                  return VolunteerHomeScreen(
+                                    username:username.text,
+                                    email:email.text,
+                                  );
+                                }));
+                          }
+                        },
+                        builder: (context, state) {
+                          return SizedBox(
+                            width: 220,
+                            child: MaterialButton(
+                              elevation: 12,
+                              padding: const EdgeInsets.all(12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              color: const Color(0xff0C359E),
+                              onPressed: () async {
+                                if (formkey.currentState!.validate()) {
+                                  await context.read<AppCubitA>().logInVolunteer(
+                                      password: password.text,
+                                      email: email.text);
+                                }
+                              },
+                              child: state is VolunteerLoginLoadingState
+                                  ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                                  : const Text(
+                                "Volunteer",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15,),
+                      CustomButton(text: 'Guest', onPressed: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
                               return const HomeGuestScreen();
                             }));
-                          },
-                          text: 'Guest'),
+                      }),
                       const SizedBox(
                         height: 30,
                       ),
@@ -216,10 +318,36 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const RegisterScreen();
-                              }));
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: const Text(
+                                        "Create as....",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return const RegisterScreen();
+                                                      }));
+                                            },
+                                            child: const Text("PARENT")),
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return const VolunteerRegisterScreen();
+                                                      }));
+                                            },
+                                            child: const Text("VOLUNTEER")),
+                                      ],
+                                    );
+                                  });
                             },
                             child: const Text(
                               'Register Now',

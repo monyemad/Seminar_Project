@@ -1,5 +1,5 @@
-
 import 'package:final_project/screen/signin/password/reset_password_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_reset_page.dart';
 import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
@@ -7,14 +7,14 @@ import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:final_project/widgets/custom_pop.dart';
 import 'package:flutter/material.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+class VolunteerForgotPasswordScreen extends StatefulWidget {
+  const VolunteerForgotPasswordScreen({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  State<VolunteerForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreenState extends State<VolunteerForgotPasswordScreen> {
 
   TextEditingController email = TextEditingController();
   TextEditingController name = TextEditingController();
@@ -71,10 +71,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     height: 10,
                   ),
                   CustomTextFormField(
-                      hintText: 'example@gmail.com',
-                      controller: email,
-                      prefixIcon: Icons.email_rounded,
-                      keyboardType: TextInputType.emailAddress,
+                    hintText: 'example@gmail.com',
+                    controller: email,
+                    prefixIcon: Icons.email_rounded,
+                    keyboardType: TextInputType.emailAddress,
                     validate: validateEmail,
                   ),
                   const SizedBox(
@@ -85,10 +85,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ResetPasswordScreen(
-                            email:email.text,
-                          );
-                        }));
+                              return VolunteerResetPasswordScreen(
+                                email:email.text,
+                              );
+                            }));
                       })
                 ],
               ),

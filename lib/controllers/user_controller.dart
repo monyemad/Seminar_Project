@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:final_project/model/profile_model.dart';
+import 'package:final_project/data/model/profile_model.dart';
 
 // import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +25,7 @@ class UserController extends GetxController {
 
   // String? gender;
 
-  fetchUserData() async {
+  fetchUserData(String userid) async {
     var token = 'YOUR_TOKEN';
     try {
       var headers = {
@@ -36,25 +36,30 @@ class UserController extends GetxController {
       String? userId = await getVariable();
       print('Retrieved userId: $userId');
       if (userId == null) {
+        print('userId is null');
         return;
       }
       http.Response response = await http.get(
           Uri.parse(
-              'https://sa3edny-backend-nodejs.onrender.com/User/getUseById/$userId'),
+              'https://sa3edny-backend-nodejs.onrender.com/User/getUseById/${userId}'),
           headers: headers);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         print(result);
-        userModel = ProfileModel.fromJson(result);
-        username.text = result["username"];
-        password.text = result["password"];
-        name.text = result["name"];
-        age.text = result["age"];
-        gender.text = result["gender"];
-        email.text = result["email"];
-        phoneNumber.text = result["phoneNumber"];
+        if (result != null) {
+          userModel = ProfileModel.fromJson(result);
+          username.text = result["username"] ?? "";
+          password.text = result["password"] ?? "";
+          name.text = result["name"] ?? "";
+          age.text = result["age"] ?? "";
+          gender.text = result["gender"] ?? "";
+          email.text = result["email"] ?? "";
+          phoneNumber.text = result["phoneNumber"] ?? "";
+        } else {
+          print("response body is null");
+        }
       } else {
-        print('error fetching data');
+        print('error fetching data: ${response.statusCode}');
       }
     } catch (e) {
       print('error $e');

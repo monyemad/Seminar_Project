@@ -1,6 +1,7 @@
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
-import 'package:final_project/screen/layout/home_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_home_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_form_page.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
 import 'package:final_project/widgets/select_and_radio/custom_radio.dart';
@@ -10,14 +11,14 @@ import 'package:final_project/widgets/custom_pop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class VolunteerRegisterScreen extends StatefulWidget {
+  const VolunteerRegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<VolunteerRegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<VolunteerRegisterScreen> {
   String? gender;
 
   bool sec = true;
@@ -72,9 +73,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: name,
                         prefixIcon: Icons.account_circle_rounded,
                         keyboardType: TextInputType.name,
-                        validate: (name) => name!.isEmpty
-                            ? 'Name must not be empty'
-                            : null,
+                        validate: (name) =>
+                            name!.isEmpty ? 'Name must not be empty' : null,
                       ),
                       const SizedBox(
                         height: 20,
@@ -229,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       BlocConsumer<AppCubitA, AppStateA>(
                         listener: (context, state) {
-                          if (state is CreateErrorState) {
+                          if (state is VolunteerCreateErrorState) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: CustomSnackBarError(
@@ -240,11 +240,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 elevation: 0,
                               ),
                             );
-                          } else if (state is CreateDoneState) {
+                          } else if (state is VolunteerCreateDoneState) {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                              return HomeScreen(
-                                username: username.text, email: email.text,
+                              return VolunteerHomeScreen(
+                                username: username.text,
+                                email: email.text,
                               );
                             }));
                           }
@@ -261,7 +262,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: const Color(0xff0C359E),
                               onPressed: () async {
                                 if (formkey.currentState!.validate()) {
-                                  await context.read<AppCubitA>().registerUser(
+                                  await context
+                                      .read<AppCubitA>()
+                                      .volunteerRegisterUser(
                                         email: email.text,
                                         password: password.text,
                                         confirmpassword: confirmpassword.text,
@@ -273,7 +276,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       );
                                 }
                               },
-                              child: state is CreateLoadingState
+                              child: state is VolunteerCreateLoadingState
                                   ? const Center(
                                       child: CircularProgressIndicator(
                                         color: Colors.white,
