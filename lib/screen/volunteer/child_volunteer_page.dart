@@ -1,9 +1,8 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:dio/dio.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
-import 'package:final_project/screen/layout/home_page.dart';
 import 'package:final_project/screen/volunteer/volunteer_home_page.dart';
-import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/select_and_radio/custom_select.dart';
 import 'package:final_project/widgets/select_and_radio/custom_radio.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:io';
-import 'package:http/http.dart' as http;
 
 class ChildVolunteerScreen extends StatefulWidget {
   final String fullname;
@@ -70,41 +68,38 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
       if (returnedImage == null) return;
       setState(() {
         img = File(returnedImage.path);
+        foundUploadImage(File(returnedImage.path));
       });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<void> foundUploadImage() async {
-    if (img != null) {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
-      );
+  Future<void> foundUploadImage(File image) async {
+    try {
+      Dio dio = Dio();
+      if (img != null) {
+        String imagename = img!.path.split("/").last;
+        FormData formData = FormData.fromMap({
+          'image':
+          await MultipartFile.fromFile(img!.path, filename: imagename),
+        });
+        print(img);
+        print(imagename);
 
-      List<int> bytes = await img!.readAsBytes();
-      var image = http.MultipartFile.fromBytes('image', bytes);
-      request.files.add(image);
+        final response = await dio.post(
+            'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage',
+            data: formData);
 
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
-        print('Image uploaded successfully');
-      } else {
-        print('Error uploading image: ${response.reasonPhrase}');
+        if (response.statusCode == 200) {
+          print('Image uploaded successfully: ${response.data}');
+        } else {
+          print('Error uploading image: ${response.statusCode}');
+        }
       }
+    } catch (e) {
+      print('Error: $e');
     }
-  }
-
-  Future<void> pickImage() async {
-    final returnedImage = await picker.pickImage(source: ImageSource.camera);
-
-    if (returnedImage == null) return;
-    setState(() {
-      img = File(returnedImage.path);
-    });
   }
 
   @override
@@ -175,11 +170,14 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                         )
                       ],
                     ),
-                    SizedBox(height: 6.0),
-                    TextButton(
-                      child: Text('Upload Image'),
-                      onPressed: foundUploadImage,
+                    const SizedBox(
+                      height: 16,
                     ),
+                    ElevatedButton(
+                        onPressed: () {
+                          foundUploadImage(File("image"));
+                        },
+                        child: const Text("Upload to Save")),
                     const SizedBox(
                       height: 25,
                     ),
@@ -324,11 +322,28 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                           });
                         },
                         items: const [
-                          'Egypt',
-                          'Madinaty',
-                          '10th of Ramadan',
-                          'New Cairo',
-                          'Shorouk'
+                          'Cairo',
+                          'Giza',
+                          'Aswan',
+                          'Alexandria',
+                          'Gharbiya',
+                          'Port Said',
+                          'Suez',
+                          'Damietta',
+                          'Dakahlia',
+                          'Al Qalyubia',
+                          'Kafr El-Sheikh',
+                          'Al Sharqia',
+                          'Beheria',
+                          'Ismailia',
+                          'Beni Suef',
+                          'Minya',
+                          'Sohag',
+                          'Qena',
+                          'New valley',
+                          'Matrouh',
+                          'North Sinai',
+                          'South Sinai',
                         ],
                         text: 'choose a country',
                         value: governorate),
@@ -346,11 +361,61 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                           });
                         },
                         items: const [
-                          'Rehab city',
-                          'Shorouk city',
-                          '6th of october city',
-                          'Second New Cairo city',
-                          'New Cairo city'
+                          'Cairo',
+                          'Central Alexandria',
+                          'El Mahalla El Kubra',
+                          'Zefta',
+                          'Borg Al Arab',
+                          'Al Agamy',
+                          '6 October city',
+                          'Al Doqi',
+                          'Al Ayyat',
+                          'South Al Ayyat',
+                          'Pyramid city',
+                          'Heliopolis',
+                          'Nozha',
+                          'New Cairo',
+                          'Ain Shams',
+                          'Shorouk',
+                          'Badr',
+                          'Maadi',
+                          'Tanta',
+                          'Zeitoun',
+                          'Port Said',
+                          'Suez',
+                          'Faysal',
+                          'Damietta',
+                          'Kafr Saad',
+                          'Kafr El Battikh',
+                          'Mansoura',
+                          'Nasr City',
+                          'Matareyah',
+                          'Belbes',
+                          '10th of Ramadan',
+                          'Banha City',
+                          'Al Obour city',
+                          'Shubra',
+                          'Qaha',
+                          'Kafr EL Sheikh',
+                          'Ismailia',
+                          'Aswan',
+                          'Qena',
+                          'Sohag',
+                          'Minya',
+                          'Beni Suef',
+                          'Damanhour',
+                          'Hurghada',
+                          'Marsa Alam',
+                          'Marsa Matruh',
+                          'Sharm El Sheikh',
+                          'Dahab',
+                          'Nuweibaa',
+                          'Al Arish',
+                          'Dakhla city',
+                          'Kharga city',
+                          'Ras Sedr',
+                          'Ras Ghareb',
+                          'Safaga city',
                         ],
                         text: 'Choose a city',
                         value: city),
@@ -386,11 +451,28 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                           });
                         },
                         items: const [
-                          'Egypt',
-                          'Madinaty',
-                          '10th of Ramadan',
-                          'New Cairo',
-                          'Shorouk'
+                          'Cairo',
+                          'Giza',
+                          'Aswan',
+                          'Alexandria',
+                          'Gharbiya',
+                          'Port Said',
+                          'Suez',
+                          'Damietta',
+                          'Dakahlia',
+                          'Al Qalyubia',
+                          'Kafr El-Sheikh',
+                          'Al Sharqia',
+                          'Beheria',
+                          'Ismailia',
+                          'Beni Suef',
+                          'Minya',
+                          'Sohag',
+                          'Qena',
+                          'New valley',
+                          'Matrouh',
+                          'North Sinai',
+                          'South Sinai',
                         ],
                         text: 'Choose a country',
                         value: currentgovernment),
@@ -408,11 +490,61 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                           });
                         },
                         items: const [
-                          'Rehab city',
-                          'Shorouk city',
-                          '6th of october city',
-                          'Second New Cairo city',
-                          'New Cairo city'
+                          'Cairo',
+                          'Central Alexandria',
+                          'El Mahalla El Kubra',
+                          'Zefta',
+                          'Borg Al Arab',
+                          'Al Agamy',
+                          '6 October city',
+                          'Al Doqi',
+                          'Al Ayyat',
+                          'South Al Ayyat',
+                          'Pyramid city',
+                          'Heliopolis',
+                          'Nozha',
+                          'New Cairo',
+                          'Ain Shams',
+                          'Shorouk',
+                          'Badr',
+                          'Maadi',
+                          'Tanta',
+                          'Zeitoun',
+                          'Port Said',
+                          'Suez',
+                          'Faysal',
+                          'Damietta',
+                          'Kafr Saad',
+                          'Kafr El Battikh',
+                          'Mansoura',
+                          'Nasr City',
+                          'Matareyah',
+                          'Belbes',
+                          '10th of Ramadan',
+                          'Banha City',
+                          'Al Obour city',
+                          'Shubra',
+                          'Qaha',
+                          'Kafr EL Sheikh',
+                          'Ismailia',
+                          'Aswan',
+                          'Qena',
+                          'Sohag',
+                          'Minya',
+                          'Beni Suef',
+                          'Damanhour',
+                          'Hurghada',
+                          'Marsa Alam',
+                          'Marsa Matruh',
+                          'Sharm El Sheikh',
+                          'Dahab',
+                          'Nuweibaa',
+                          'Al Arish',
+                          'Dakhla city',
+                          'Kharga city',
+                          'Ras Sedr',
+                          'Ras Ghareb',
+                          'Safaga city',
                         ],
                         text: 'Choose a city',
                         value: currentcity),
@@ -437,17 +569,6 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    // CustomButton(
-                    //     text: 'Next',
-                    //     onPressed: () {
-                    //       if (formkey.currentState!.validate()) {
-                    //         Navigator.push(context,
-                    //             MaterialPageRoute(builder: (context) {
-                    //               return const VolunteerHomeScreen();
-                    //             }));
-                    //       }
-                    //     }),
-
                     BlocConsumer<AppCubitA, AppStateA>(
                       listener: (context, state) {
                         if (state is FoundCaseErrorState) {
@@ -477,7 +598,7 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                           );
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                            return const HomeScreen(
+                            return const VolunteerHomeScreen(
                               username: '',
                               email: '',
                             );
@@ -517,10 +638,7 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                                       clothes: clothes.text,
                                       mark: mark.text,
                                       report: widget.report.toString(),
-                                      image: img.toString(),
-                                      dna: dna.text,
-                                      childdna: childdna.text,
-                                      result: results.text,
+                                      image: '',
                                     );
                               }
                             },

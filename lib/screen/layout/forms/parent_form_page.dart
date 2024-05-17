@@ -15,13 +15,13 @@ class ParentScreen extends StatefulWidget {
 
 class _ParentScreenState extends State<ParentScreen> {
   String? gender;
+  String? record;
 
   TextEditingController address = TextEditingController();
   TextEditingController fullname = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController relation = TextEditingController();
   TextEditingController national = TextEditingController();
-  TextEditingController record = TextEditingController();
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
@@ -171,15 +171,19 @@ class _ParentScreenState extends State<ParentScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const CustomText(text: 'Record Number:'),
-                    const SizedBox(
-                      height: 8,
+                    CustomRadio(
+                      text: "Has an official record?",
+                      title: "Yes",
+                      value: 'Yes',
+                      groupValue: record,
+                      title1: "No",
+                      value1: "No",
+                      onChange: (value) {
+                        setState(() {
+                          record = value;
+                        });
+                      },
                     ),
-                    CustomTextFormField(
-                        hintText: "Enter your Record number",
-                        controller: record,
-                        prefixIcon: Icons.numbers_rounded,
-                        keyboardType: TextInputType.number,),
                     const SizedBox(
                       height: 25,
                     ),
@@ -194,7 +198,7 @@ class _ParentScreenState extends State<ParentScreen> {
                                 phone: phone.text,
                                 address: address.text,
                                 national: national.text,
-                                record: record.text,
+                                record: record.toString(),
                                 relation: relation.text,
                                 gender: gender.toString(),
                               );

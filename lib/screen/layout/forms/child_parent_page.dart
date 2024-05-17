@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'dart:convert' as convert;
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/layout/home_page.dart';
@@ -58,7 +62,50 @@ class _ChildScreenState extends State<ChildScreen> {
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  File? imageFile;
+  ImagePicker picker = ImagePicker();
+  File? img;
+
+  Future<void> pickFromGallery() async {
+    try {
+      final returnedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (returnedImage == null) {
+        await missingUploadImage(File(returnedImage!.path));
+      }
+      setState(() {
+        img = File(returnedImage.path);
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> missingUploadImage(File image) async {
+    try {
+      Dio dio = Dio();
+      if (img != null) {
+        String imagename = img!.path.split("/").last;
+        FormData formData = FormData.fromMap({
+          'image':
+              await MultipartFile.fromFile(img!.path, filename: imagename),
+        });
+        print(img);
+        print(imagename);
+
+        final response = await dio.post(
+            'https://sa3edny-backend-nodejs.onrender.com/missing/uploadimage',
+            data: formData);
+
+        if (response.statusCode == 200) {
+          print('Image uploaded successfully: ${response.data}');
+        } else {
+          print('Error uploading image: ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +144,17 @@ class _ChildScreenState extends State<ChildScreen> {
                       ),
                       Stack(
                         children: [
-                          const Image(
-                            image: AssetImage('assets/images/child (2).png'),
-                            width: 150,
-                          ),
+                          img == null
+                              ? Image.asset(
+                                  'assets/images/child (2).png',
+                                  height: 150,
+                                  width: 150,
+                                )
+                              : Image.file(
+                                  img!,
+                                  width: 150,
+                                  height: 150,
+                                ),
                           Positioned(
                             bottom: 0,
                             right: 0,
@@ -115,13 +169,20 @@ class _ChildScreenState extends State<ChildScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: IconButton(
-                                  onPressed: () =>
-                                      getImage(source: ImageSource.gallery),
+                                  onPressed: pickFromGallery,
                                   icon: const Icon(Icons.camera_alt)),
                             ),
                           )
                         ],
                       ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            missingUploadImage(File("image"));
+                          },
+                          child: const Text("Upload to Save")),
                       const SizedBox(
                         height: 25,
                       ),
@@ -285,7 +346,24 @@ class _ChildScreenState extends State<ChildScreen> {
                           'Giza',
                           'Aswan',
                           'Alexandria',
-                          'Luxor'
+                          'Gharbiya',
+                          'Port Said',
+                          'Suez',
+                          'Damietta',
+                          'Dakahlia',
+                          'Al Qalyubia',
+                          'Kafr El-Sheikh',
+                          'Al Sharqia',
+                          'Beheria',
+                          'Ismailia',
+                          'Beni Suef',
+                          'Minya',
+                          'Sohag',
+                          'Qena',
+                          'New valley',
+                          'Matrouh',
+                          'North Sinai',
+                          'South Sinai',
                         ],
                         text: 'Select a Country',
                         value: selectedItem,
@@ -305,10 +383,60 @@ class _ChildScreenState extends State<ChildScreen> {
                         },
                         items: const [
                           'Cairo',
-                          'Giza',
+                          'Central Alexandria',
+                          'El Mahalla El Kubra',
+                          'Zefta',
+                          'Borg Al Arab',
+                          'Al Agamy',
+                          '6 October city',
+                          'Al Doqi',
+                          'Al Ayyat',
+                          'South Al Ayyat',
+                          'Pyramid city',
+                          'Heliopolis',
+                          'Nozha',
+                          'New Cairo',
+                          'Ain Shams',
+                          'Shorouk',
+                          'Badr',
+                          'Maadi',
+                          'Tanta',
+                          'Zeitoun',
+                          'Port Said',
+                          'Suez',
+                          'Faysal',
+                          'Damietta',
+                          'Kafr Saad',
+                          'Kafr El Battikh',
+                          'Mansoura',
+                          'Nasr City',
+                          'Matareyah',
+                          'Belbes',
+                          '10th of Ramadan',
+                          'Banha City',
+                          'Al Obour city',
+                          'Shubra',
+                          'Qaha',
+                          'Kafr EL Sheikh',
+                          'Ismailia',
                           'Aswan',
-                          'Alexandria',
-                          'Luxor'
+                          'Qena',
+                          'Sohag',
+                          'Minya',
+                          'Beni Suef',
+                          'Damanhour',
+                          'Hurghada',
+                          'Marsa Alam',
+                          'Marsa Matruh',
+                          'Sharm El Sheikh',
+                          'Dahab',
+                          'Nuweibaa',
+                          'Al Arish',
+                          'Dakhla city',
+                          'Kharga city',
+                          'Ras Sedr',
+                          'Ras Ghareb',
+                          'Safaga city',
                         ],
                         text: 'Select a City',
                         value: city,
@@ -327,11 +455,10 @@ class _ChildScreenState extends State<ChildScreen> {
                             });
                           },
                           items: const [
-                            'Found and stayed with a known person',
-                            'Found and handed over to the police',
-                            'Child begs with an adult',
-                            'Child begs alone',
-                            'Lost child'
+                            'Lost',
+                            'Runaway',
+                            'Kidnapped',
+                            'Do not Know',
                           ],
                           text: 'state of missing',
                           value: statemissing),
@@ -346,7 +473,7 @@ class _ChildScreenState extends State<ChildScreen> {
                         hintText: "Enter your Child Birth certificate",
                         controller: date,
                         keyboardType: TextInputType.number,
-                        prefixIcon: Icons.date_range_rounded,
+                        prefixIcon: Icons.numbers_rounded,
                         validate: (value) {
                           if (value!.isEmpty) {
                             return 'birth certificate must not be empty';
@@ -390,9 +517,25 @@ class _ChildScreenState extends State<ChildScreen> {
                               ),
                             );
                           } else if (state is MissingCaseDoneState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AwesomeSnackbarContent(
+                                  title: 'Success',
+                                  message: state.done,
+                                  contentType: ContentType.success,
+                                  // color: const Color(0xffC40C0C),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                            );
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const HomeScreen(username: '', email: '',);
+                              return const HomeScreen(
+                                username: '',
+                                email: '',
+                              );
                             }));
                           }
                         },
@@ -429,10 +572,7 @@ class _ChildScreenState extends State<ChildScreen> {
                                         fullname: widget.fullname,
                                         certificate: date.text,
                                         mark: mark.text,
-                                        dna: dna.text,
-                                        childDna: childDna.text,
-                                        result: result.text,
-                                        image: '',
+                                        image: img!.path,
                                       );
                                 }
                               },
@@ -464,14 +604,5 @@ class _ChildScreenState extends State<ChildScreen> {
         ),
       ),
     );
-  }
-
-  void getImage({required ImageSource source}) async {
-    final file = await ImagePicker().pickImage(source: source);
-    if (file?.path != null) {
-      setState(() {
-        imageFile = File(file!.path);
-      });
-    }
   }
 }

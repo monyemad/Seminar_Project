@@ -245,3 +245,19 @@ class SupportDoneState extends AppStateA {
 
   SupportDoneState(this.done);
 }
+
+// DnaResult
+
+class DnaResultLoadingState extends AppStateA {}
+
+class DnaResultErrorState extends AppStateA {
+  final String error;
+
+  DnaResultErrorState(this.error);
+}
+
+class DnaResultDoneState extends AppStateA {
+  final String done;
+
+  DnaResultDoneState(this.done);
+}

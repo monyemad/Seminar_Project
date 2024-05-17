@@ -1,10 +1,8 @@
 import 'package:final_project/screen/layout/aging_page.dart';
 import 'package:final_project/screen/layout/dna/dna_page.dart';
 import 'package:final_project/screen/layout/forms/parent_form_page.dart';
-import 'package:final_project/screen/volunteer/volunteer_form_page.dart';
 import 'package:final_project/screen/layout/matching_page.dart';
 import 'package:final_project/screen/menu/complain.dart';
-import 'package:final_project/screen/menu/profile_page.dart';
 import 'package:final_project/screen/menu/result_page.dart';
 import 'package:final_project/screen/menu/setting/setting_page.dart';
 import 'package:final_project/screen/menu/support_page.dart';
@@ -34,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: const Text('UserName'),
-              accountEmail: const Text('Example@gmail.com'),
+              accountName: Text(widget.username),
+              accountEmail: Text(widget.email),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
                   child: Image.asset(
@@ -54,15 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     fit: BoxFit.cover),
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ProfileScreen();
-                }));
-              },
             ),
             const Divider(),
             ListTile(
@@ -83,19 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   return const SupportScreen();
                 }));
               },
-              // trailing: ClipOval(
-              //   child: Container(
-              //     color: Colors.red,
-              //     width: 20,
-              //     height: 20,
-              //     child: const Center(
-              //       child: Text(
-              //         '0',
-              //         style: TextStyle(fontSize: 12, color: Colors.white),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ),
             const Divider(),
             ListTile(
@@ -103,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: const Text('Test_Results'),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const AiModelResultScreen();
+                    return const DnaResultScreen();
                   }));
                 }),
             const Divider(),
@@ -162,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 content: const Text(
-                                  "Report Case....",
+                                  "Report as....",
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 actions: [
@@ -180,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
                       },
                       image: "assets/images/form.gif",
-                      text: "Report Cases"),
+                      text: "Form"),
                   const SizedBox(
                     height: 40,
                   ),

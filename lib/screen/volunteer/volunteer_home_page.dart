@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:final_project/screen/menu/policies_page.dart';
+import 'package:final_project/screen/volunteer/volunteer_form_page.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:final_project/screen/layout/dna/dna_page.dart';
@@ -122,7 +123,6 @@ class _VolunteerHomeScreenState extends State<VolunteerHomeScreen> {
                     fit: BoxFit.cover),
               ),
             ),
-            const Divider(),
             ListTile(
               leading: const Icon(Icons.share),
               title: const Text('share'),
@@ -213,7 +213,7 @@ class _VolunteerHomeScreenState extends State<VolunteerHomeScreen> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 content: const Text(
-                                  "Report Case....",
+                                  "Report as....",
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 actions: [
@@ -222,7 +222,7 @@ class _VolunteerHomeScreenState extends State<VolunteerHomeScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return const ParentScreen();
+                                          return const VolunteerScreen();
                                         }));
                                       },
                                       child: const Text("FOUND")),
@@ -231,7 +231,7 @@ class _VolunteerHomeScreenState extends State<VolunteerHomeScreen> {
                             });
                       },
                       image: "assets/images/form.gif",
-                      text: "Report Cases"),
+                      text: "Form"),
                   const SizedBox(
                     height: 40,
                   ),

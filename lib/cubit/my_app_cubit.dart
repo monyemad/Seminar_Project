@@ -50,14 +50,15 @@ class AppCubitA extends Cubit<AppStateA> {
           body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
       if (response.statusCode == 201) {
-        emit(CreateDoneState("user registered successfully"));
+        emit(CreateDoneState("User Registered Successfully"));
       } else {
         print("Failed to register user.Status code: ${response.statusCode}");
         emit(CreateErrorState(
-            "Failed to register user.Status code: ${response.statusCode}"));
+            "Check Your Data"));
       }
     } catch (e) {
-      emit(CreateErrorState(e.toString()));
+      print("Error: $e");
+      emit(CreateErrorState("Registration Failed"));
     }
   }
 
@@ -88,14 +89,15 @@ class AppCubitA extends Cubit<AppStateA> {
           body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
       if (response.statusCode == 201) {
-        emit(VolunteerCreateDoneState("user registered successfully"));
+        emit(VolunteerCreateDoneState("User Registered Successfully"));
       } else {
         print("Failed to register user.Status code: ${response.statusCode}");
         emit(VolunteerCreateErrorState(
-            "Failed to register user.Status code: ${response.statusCode}"));
+            "Check your Data"));
       }
     } catch (e) {
-      emit(VolunteerCreateErrorState(e.toString()));
+      print("Error: $e");
+      emit(VolunteerCreateErrorState('Registration Failed'));
     }
   }
 
@@ -119,14 +121,15 @@ class AppCubitA extends Cubit<AppStateA> {
         final userId = responseData['userId'];
         await saveVariable(userId);
         print('user is login successfully: ${response.body}');
-        emit(LoginDoneState(userId ?? '', 'user is login successfully'));
+        emit(LoginDoneState(userId ?? '', 'User Login Successfully'));
       } else {
+        print("Failed to login user. Status code: ${response.statusCode}");
         emit(LoginErrorState(
-            "Failed to login user. Status code: ${response.statusCode}"));
+            "Incorrect email or password"));
       }
     } catch (e) {
       print("Error: $e");
-      emit(LoginErrorState(e.toString()));
+      emit(LoginErrorState("User Login Failed"));
     }
   }
 
@@ -141,7 +144,8 @@ class AppCubitA extends Cubit<AppStateA> {
         "password": password,
       };
       final response = await http.post(
-        Uri.parse('https://sa3edny-backend-nodejs.onrender.com/volunteer/userLogin'),
+        Uri.parse(
+            'https://sa3edny-backend-nodejs.onrender.com/volunteer/userLogin'),
         body: jsonEncode(userLogin),
         headers: {'Content-Type': 'application/json'},
       );
@@ -150,14 +154,16 @@ class AppCubitA extends Cubit<AppStateA> {
         final userId = responseData['userId'];
         await saveVariable(userId);
         print('user is login successfully: ${response.body}');
-        emit(VolunteerLoginDoneState(userId ?? '', 'user is login successfully'));
+        emit(VolunteerLoginDoneState(
+            userId ?? '', 'User Login Successfully'));
       } else {
+        print("Failed to login user. Status code: ${response.statusCode}");
         emit(VolunteerLoginErrorState(
-            "Failed to login user. Status code: ${response.statusCode}"));
+            "Incorrect Email or Password"));
       }
     } catch (e) {
       print("Error: $e");
-      emit(LoginErrorState(e.toString()));
+      emit(LoginErrorState("User Login Failed"));
     }
   }
 
@@ -314,9 +320,6 @@ class AppCubitA extends Cubit<AppStateA> {
     required String gender,
     required String national,
     required String image,
-    required String dna,
-    required String childdna,
-    required String result,
   }) async {
     try {
       emit(FoundCaseLoadingState());
@@ -347,22 +350,19 @@ class AppCubitA extends Cubit<AppStateA> {
         "volunteer_national_id": national,
         "volunteer_gender": gender,
         "has_official_report": report,
-        "volunteerDNA_id": dna,
-        "childDNA_id": childdna,
-        "results": result,
       };
       var response = await http.post(
           Uri.parse(
               'https://sa3edny-backend-nodejs.onrender.com/found/createCase/$userId'),
           body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
-      if (response.statusCode == 200) {
-        print('success: ${response.body}');
-        emit(FoundCaseDoneState("volunteer created successfully"));
-      } else {
+      if (response.statusCode == 500) {
         print("Failed to created.Status code: ${response.statusCode}");
         emit(FoundCaseErrorState(
             "Failed to created.Status code: ${response.statusCode}"));
+      } else {
+        print('success: ${response.body}');
+        emit(FoundCaseDoneState("volunteer created successfully"));
       }
     } catch (e) {
       print('Error: ${e}');
@@ -391,9 +391,6 @@ class AppCubitA extends Cubit<AppStateA> {
     required String mark,
     required String government,
     required String gender,
-    required String dna,
-    required String childDna,
-    required String result,
     required String image,
   }) async {
     try {
@@ -426,22 +423,19 @@ class AppCubitA extends Cubit<AppStateA> {
         "reporter_relative_relation": relation,
         "reporter_gender": gender,
         "record_number": record,
-        "parentDNA-Id": dna,
-        "childDNA-Id": childDna,
-        "results": result,
       };
       var response = await http.post(
           Uri.parse(
               'https://sa3edny-backend-nodejs.onrender.com/missing/createCase/$userId'),
           body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
-      if (response.statusCode == 201) {
-        print('missing created successfully: ${response.statusCode}');
-        emit(MissingCaseDoneState("missing created successfully"));
-      } else {
+      if (response.statusCode == 500) {
         print("Failed to created.Status code: ${response.statusCode}");
         emit(MissingCaseErrorState(
             "Failed to created.Status code: ${response.statusCode}"));
+      } else {
+        print('missing created successfully: ${response.statusCode}');
+        emit(MissingCaseDoneState("missing created successfully"));
       }
     } catch (e) {
       print('Error: $e');
@@ -499,70 +493,44 @@ class AppCubitA extends Cubit<AppStateA> {
     }
   }
 
-  // Future<void> foundUploadImage() async {
-  //   if (img != null) {
-  //     var request = http.MultipartRequest(
-  //       'POST',
-  //       Uri.parse(
-  //           'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
-  //     );
-  //
-  //     List<int> bytes = await img!.readAsBytes();
-  //     var image = http.MultipartFile.fromBytes('image', bytes);
-  //     request.files.add(image);
-  //
-  //     var response = await request.send();
-  //
-  //     if (response.statusCode == 200) {
-  //       // Image uploaded successfully
-  //       print('Image uploaded successfully');
-  //     } else {
-  //       // Error uploading image
-  //       print('Error uploading image: ${response.reasonPhrase}');
-  //     }
-  //   }
-  // }
+  ImagePicker picker = ImagePicker();
+  File? img;
 
+  Future<void> pickImage() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      img = File(image.path);
+      await foundUploadImage(File(image.path));
+    } else {
+      print("null img");
+    }
+  }
 
-  // ImagePicker picker = ImagePicker();
-  // File? img;
-  //
-  // Future<void> pickImage() async {
-  //   final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-  //   if (image != null) {
-  //     img = File(image.path);
-  //     await foundUploadImage();
-  //   } else {
-  //     print("null img");
-  //   }
-  // }
-  //
-  // Future<void> foundUploadImage() async {
-  //   try{
-  //     if(img!=null){
-  //     var request = http.MultipartRequest(
-  //       'POST',
-  //       Uri.parse(
-  //           'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
-  //     );
-  //
-  //     // List<int> bytes = await img!.readAsBytes();
-  //     var image = http.MultipartFile.fromBytes('image', img!.path);
-  //     request.files.add(image);
-  //
-  //     var response = await request.send();
-  //
-  //     if (response.statusCode == 200) {
-  //       // Image uploaded successfully
-  //       print('Image uploaded successfully');
-  //     } else {
-  //       // Error uploading image
-  //       print('Error uploading image: ${response.reasonPhrase}');
-  //     }}
-  //   }catch(e){
-  //     print(e.toString());
-  //   }
-  // }
+  Future<void> foundUploadImage(File image) async {
+    try {
+      if (img != null) {
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+              'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
+        );
+
+        // List<int> bytes = await img!.readAsBytes();
+        // var image = http.MultipartFile.fromBytes('image', img!.path);
+        // request.files.add(image);
+
+        var response = await request.send();
+
+        if (response.statusCode == 200) {
+          print('Image uploaded successfully');
+        } else {
+          print('Error uploading image: ${response.reasonPhrase}');
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future<void> dnaData({
     required String name,
@@ -639,6 +607,26 @@ class AppCubitA extends Cubit<AppStateA> {
       }
     } catch (e) {
       emit(SupportErrorState(e.toString()));
+    }
+  }
+
+  Future<void> matching()async{
+    try{
+      emit(DnaResultLoadingState());
+      final response = await http.get(
+          Uri.parse(
+              "https://jokerboyxx0.pythonanywhere.com/calculate_and_display_matching_score"));
+      if (response.statusCode == 200) {
+        emit(DnaResultDoneState("Dna Matching Found"));
+      }
+      else {
+        print("Failed to match.Status code: ${response.statusCode}");
+        // emit(DnaResultErrorState(
+        //     "Failed to Match"));
+      }
+    }catch(e){
+      print('Error:$e');
+      // emit(DnaResultErrorState(e.toString()));
     }
   }
 }

@@ -148,7 +148,7 @@ class _VolunteerScreenState extends State<VolunteerScreen> {
                       height: 20,
                     ),
                     CustomRadio(
-                      text: "Has an official report:",
+                      text: "Has an official report?",
                       title: "Yes",
                       value: 'Yes',
                       groupValue: report,

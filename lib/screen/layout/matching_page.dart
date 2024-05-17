@@ -50,7 +50,7 @@ class RecognitionScreen extends StatelessWidget {
                         ),))
                   ],
                 ),
-                SizedBox(height: 80,)
+                SizedBox(height: 80,),
               ],
             ),
           ],
