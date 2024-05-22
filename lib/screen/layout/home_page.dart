@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(
-                    height: 60,
+                    height: 20,
                   ),
                   CustomHome2(
                       onPressed: () {

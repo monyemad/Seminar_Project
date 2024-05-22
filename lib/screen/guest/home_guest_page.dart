@@ -52,7 +52,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: CustomGuestHome(
-                    title: 'On Snap!',
+                    title: 'Oh Snap!',
                     message: 'Please, Login first',
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -68,7 +68,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: CustomGuestHome(
-                    title: 'On Snap!',
+                    title: 'Oh Snap!',
                     message: 'Please, Login first',
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -84,7 +84,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: CustomGuestHome(
-                    title: 'On Snap!',
+                    title: 'Oh Snap!',
                     message: 'Please, Login first',
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -113,7 +113,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: CustomGuestHome(
-                    title: 'On Snap!',
+                    title: 'Oh Snap!',
                     message: 'Please, Login first',
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -129,7 +129,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: CustomGuestHome(
-                    title: 'On Snap!',
+                    title: 'Oh Snap!',
                     message: 'Please, Login first',
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -198,7 +198,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                           content: CustomGuestHome(
-                                            title: 'On Snap!',
+                                            title: 'Oh Snap!',
                                             message: 'Please, Login first',
                                           ),
                                           behavior: SnackBarBehavior.floating,
@@ -212,7 +212,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                           content: CustomGuestHome(
-                                            title: 'On Snap!',
+                                            title: 'Oh Snap!',
                                             message: 'Please, Login first',
                                           ),
                                           behavior: SnackBarBehavior.floating,
@@ -235,7 +235,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: CustomGuestHome(
-                            title: 'On Snap!',
+                            title: 'Oh Snap!',
                             message: 'Please, Login first',
                           ),
                           behavior: SnackBarBehavior.floating,
@@ -253,7 +253,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: CustomGuestHome(
-                            title: 'On Snap!',
+                            title: 'Oh Snap!',
                             message: 'Please, Login first',
                           ),
                           behavior: SnackBarBehavior.floating,
@@ -270,7 +270,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: CustomGuestHome(
-                          title: 'On Snap!',
+                          title: 'Oh Snap!',
                           message: 'Please, Login first',
                         ),
                         behavior: SnackBarBehavior.floating,
