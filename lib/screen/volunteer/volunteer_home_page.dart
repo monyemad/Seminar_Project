@@ -254,7 +254,7 @@ class _VolunteerHomeScreenState extends State<VolunteerHomeScreen> {
                           return const VolunteerSupportScreen();
                         }));
                       },
-                      image: "assets/images/help.gif",
+                      image: "assets/images/help 2.gif",
                       text: 'Help Center'),
                   const SizedBox(
                     height: 40,

@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/signin/password/success_page.dart';
@@ -129,6 +130,19 @@ class _RestPasswordScreenState extends State<ResetPasswordScreen> {
                               ),
                             );
                           } else if (state is ResetDoneState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AwesomeSnackbarContent(
+                                  title: 'Success',
+                                  message: state.done,
+                                  contentType: ContentType.success,
+                                  // color: const Color(0xffC40C0C),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                            );
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
                               return const SuccessScreen();

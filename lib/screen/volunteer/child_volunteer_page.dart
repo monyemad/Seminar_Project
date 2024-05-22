@@ -173,11 +173,19 @@ class _ChildVolunteerScreenState extends State<ChildVolunteerScreen> {
                     const SizedBox(
                       height: 16,
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          foundUploadImage(File("image"));
-                        },
-                        child: const Text("Upload to Save")),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text("Child Image:",style: TextStyle(fontSize: 20),),
+                        const SizedBox(width: 10,),
+                        ElevatedButton(
+                            onPressed: () {
+                              foundUploadImage(File("image"));
+                            },
+                            child: const Text("Upload to Save")),
+                      ],
+                    ),
                     const SizedBox(
                       height: 25,
                     ),

@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/screen/menu/support_page.dart';
@@ -313,6 +314,19 @@ class _TherapyScreenState extends State<TherapyScreen> {
                             ),
                           );
                         } else if (state is TherapySessionDoneState) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                title: 'Success',
+                                message: state.done,
+                                contentType: ContentType.success,
+                                // color: const Color(0xffC40C0C),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
                           Navigator.pop(context,
                               MaterialPageRoute(builder: (context) {
                             return const SupportScreen();

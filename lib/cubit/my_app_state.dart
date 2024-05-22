@@ -8,7 +8,11 @@ class ErrorState extends AppStateA {}
 
 class DoneState extends AppStateA {}
 
-class PickImageState extends AppStateA {}
+class PickImageState extends AppStateA {
+  final String message;
+
+  PickImageState(this.message);
+}
 
 // Edit Profile
 
@@ -86,7 +90,11 @@ class ResetErrorState extends AppStateA {
   ResetErrorState(this.error);
 }
 
-class ResetDoneState extends AppStateA {}
+class ResetDoneState extends AppStateA {
+  final String done;
+
+  ResetDoneState(this.done);
+}
 
 // Volunteer Reset
 
@@ -98,7 +106,11 @@ class VolunteerResetErrorState extends AppStateA {
   VolunteerResetErrorState(this.error);
 }
 
-class VolunteerResetDoneState extends AppStateA {}
+class VolunteerResetDoneState extends AppStateA {
+  final String done;
+
+  VolunteerResetDoneState(this.done);
+}
 
 // Create acc
 
@@ -260,4 +272,20 @@ class DnaResultDoneState extends AppStateA {
   final String done;
 
   DnaResultDoneState(this.done);
+}
+
+// Upload Image Recognition
+
+class MatchingLoadingState extends AppStateA {}
+
+class MatchingErrorState extends AppStateA {
+  final String error;
+
+  MatchingErrorState(this.error);
+}
+
+class MatchingDoneState extends AppStateA {
+  final String done;
+
+  MatchingDoneState(this.done);
 }

@@ -3,12 +3,11 @@ import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:final_project/widgets/custom_pop.dart';
-import 'package:final_project/widgets/form_field/custom_button.dart';
 import 'package:final_project/widgets/form_field/custom_text.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:final_project/widgets/snackbar/custom_error.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
 class DnaResultScreen extends StatefulWidget {
   const DnaResultScreen({
@@ -20,8 +19,7 @@ class DnaResultScreen extends StatefulWidget {
 }
 
 class _DnaResultScreenState extends State<DnaResultScreen> {
-  TextEditingController matching = TextEditingController();
-
+  TextEditingController dna = TextEditingController();
   GlobalKey<FormState> formkey = GlobalKey();
 
   @override
@@ -51,55 +49,88 @@ class _DnaResultScreenState extends State<DnaResultScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const CustomText(text: "Matching Score:"),
+                    const CustomText(text: "DNA Code:"),
                     const SizedBox(
                       height: 8,
                     ),
                     CustomTextFormField(
-                      hintText: "Enter your Matching Score",
-                      controller: matching,
-                      keyboardType: TextInputType.number,
+                      hintText: "Enter your DNA Code",
+                      controller: dna,
+                      keyboardType: TextInputType.text,
                       prefixIcon: Icons.bloodtype_rounded,
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'Matching Score must not be empty';
+                          return 'DNA Code must not be empty';
                         }
-                        return null;
                       },
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    CustomButton(
-                        text: "Match",
-                        onPressed: () {
-                          if (matching.text =="0.5") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: AwesomeSnackbarContent(
-                                  title: 'Success',
-                                  message: "Dna Result Found",
-                                  contentType: ContentType.success,
-                                  // color: const Color(0xffC40C0C),
-                                ),
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.transparent,
-                                elevation: 0,
+                    BlocConsumer<AppCubitA, AppStateA>(
+                      listener: (context, state) {
+                        if (state is DnaResultErrorState) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: CustomSnackBarError(
+                                message: state.error,
                               ),
-                            );
-                          } else if(matching.text !="0.5"){
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: CustomSnackBarError(
-                                  message: "Dna result not Found",
-                                ),
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.transparent,
-                                elevation: 0,
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
+                        } else if (state is DnaResultDoneState) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.done),
+                              backgroundColor: Colors.grey.shade50,
+                              elevation: 10,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadiusDirectional.only(
+                                  topEnd: Radius.circular(15),
+                                  topStart: Radius.circular(15)
+                                )
                               ),
-                            );
-                          }
-                        }),
+                            ),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: 220,
+                          child: MaterialButton(
+                            elevation: 12,
+                            padding: const EdgeInsets.all(12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            color: const Color(0xff0C359E),
+                            onPressed: () async {
+                              if (formkey.currentState!.validate()) {
+                                await context
+                                    .read<AppCubitA>()
+                                    .result(child_dna: dna.text);
+                              }
+                            },
+                            child: state is DnaResultLoadingState
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    "Result",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
+                    ),
                     const SizedBox(
                       height: 10,
                     ),

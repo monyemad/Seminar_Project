@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 import 'dart:convert' as convert;
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:final_project/data/model/profile_model.dart';
 import 'package:final_project/cubit/my_app_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,8 +53,7 @@ class AppCubitA extends Cubit<AppStateA> {
         emit(CreateDoneState("User Registered Successfully"));
       } else {
         print("Failed to register user.Status code: ${response.statusCode}");
-        emit(CreateErrorState(
-            "Check Your Data"));
+        emit(CreateErrorState("Check Your Data"));
       }
     } catch (e) {
       print("Error: $e");
@@ -92,8 +91,7 @@ class AppCubitA extends Cubit<AppStateA> {
         emit(VolunteerCreateDoneState("User Registered Successfully"));
       } else {
         print("Failed to register user.Status code: ${response.statusCode}");
-        emit(VolunteerCreateErrorState(
-            "Check your Data"));
+        emit(VolunteerCreateErrorState("Check your Data"));
       }
     } catch (e) {
       print("Error: $e");
@@ -124,8 +122,7 @@ class AppCubitA extends Cubit<AppStateA> {
         emit(LoginDoneState(userId ?? '', 'User Login Successfully'));
       } else {
         print("Failed to login user. Status code: ${response.statusCode}");
-        emit(LoginErrorState(
-            "Incorrect email or password"));
+        emit(LoginErrorState("Enter a valid email or password"));
       }
     } catch (e) {
       print("Error: $e");
@@ -154,12 +151,10 @@ class AppCubitA extends Cubit<AppStateA> {
         final userId = responseData['userId'];
         await saveVariable(userId);
         print('user is login successfully: ${response.body}');
-        emit(VolunteerLoginDoneState(
-            userId ?? '', 'User Login Successfully'));
+        emit(VolunteerLoginDoneState(userId ?? '', 'Volunteer Login Successfully'));
       } else {
         print("Failed to login user. Status code: ${response.statusCode}");
-        emit(VolunteerLoginErrorState(
-            "Incorrect Email or Password"));
+        emit(VolunteerLoginErrorState("Enter a valid Email or Password"));
       }
     } catch (e) {
       print("Error: $e");
@@ -187,15 +182,14 @@ class AppCubitA extends Cubit<AppStateA> {
       );
       if (response.statusCode == 200) {
         print('user is rest successfully: ${response.body}');
-        emit(ResetDoneState());
+        emit(ResetDoneState('Reset Password is successfully'));
       } else {
         print("Failed to reset user. Status code: ${response.statusCode}");
-        emit(ResetErrorState(
-            "Failed to reset user. Status code: ${response.statusCode}"));
+        emit(ResetErrorState("Your Password is not matched"));
       }
     } catch (e) {
       print('Error: ${e}');
-      emit(ResetErrorState('Error: ${e}'));
+      emit(ResetErrorState('Error'));
     }
   }
 
@@ -219,85 +213,16 @@ class AppCubitA extends Cubit<AppStateA> {
       );
       if (response.statusCode == 200) {
         print('user is rest successfully: ${response.body}');
-        emit(VolunteerResetDoneState());
+        emit(VolunteerResetDoneState('Reset Password is successfully'));
       } else {
         print("Failed to reset user. Status code: ${response.statusCode}");
-        emit(VolunteerResetErrorState(
-            "Failed to reset user. Status code: ${response.statusCode}"));
+        emit(VolunteerResetErrorState("Your password is not matched"));
       }
     } catch (e) {
       print('Error: ${e}');
-      emit(VolunteerResetErrorState('Error: ${e}'));
+      emit(VolunteerResetErrorState('Error'));
     }
   }
-
-  ProfileModel? userData;
-
-  Future<void> profileData(String userId) async {
-    try {
-      emit(ProfileLoadingState());
-      String? userId = await getVariable();
-      print('Retrieved userId: $userId'); // Debug print
-      if (userId == null) {
-        emit(ProfileErrorState("UserId is null"));
-        return;
-      }
-      // List User=[];
-      final response = await http.get(
-        Uri.parse(
-            'https://sa3edny-backend-nodejs.onrender.com/User/getUseById/${userId}'),
-      );
-      var responsebody = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        print('$responsebody');
-        // User.addAll(responsebody);
-        // print(User);
-        var user = jsonDecode(responsebody);
-        print(user);
-        if (user != null) {
-          // userData = ProfileModel.fromJson(user);
-          userData = ProfileModel(
-            username: user['username'],
-            password: user['password'],
-            name: user['name'],
-            age: user['age'],
-            gender: user['gender'],
-            email: user['email'],
-            phoneNumber: user['phoneNumber'],
-          );
-        }
-        emit(ProfileDoneState("get profile data successfully"));
-      } else {
-        emit(ProfileErrorState('Failed to fetch user data'));
-      }
-    } catch (e) {
-      emit(ProfileErrorState('Error fetching user data: $e'));
-    }
-  }
-
-  // Future<void> profileData(String username) async {
-  //   try {
-  //     emit(ProfileLoadingState());
-  //     String? userId = await getVariable();
-  //     print('Retrieved userId: $userId'); // Debug print
-  //     if (userId == null) {
-  //       emit(ProfileErrorState("UserId is null"));
-  //       return;
-  //     }
-  //     final response = await http.get(Uri.parse(
-  //         'https://sa3edny-backend-nodejs.onrender.com/user/updateUser/$userId'));
-  //     if (response.statusCode == 200) {
-  //       print('user is rest successfully: ${response.body}');
-  //       emit(ProfileDoneState());
-  //     } else {
-  //       print("Failed to reset user. Status code: ${response.statusCode}");
-  //       emit(ProfileErrorState(
-  //           "Failed to reset user. Status code: ${response.statusCode}"));
-  //     }
-  //   } catch (e) {
-  //     emit(ProfileErrorState(e.toString()));
-  //   }
-  // }
 
   Future<void> foundCase({
     required String age,
@@ -358,15 +283,14 @@ class AppCubitA extends Cubit<AppStateA> {
           headers: {"Content-type": "application/json"});
       if (response.statusCode == 500) {
         print("Failed to created.Status code: ${response.statusCode}");
-        emit(FoundCaseErrorState(
-            "Failed to created.Status code: ${response.statusCode}"));
+        emit(FoundCaseErrorState("Check for your data"));
       } else {
         print('success: ${response.body}');
         emit(FoundCaseDoneState("volunteer created successfully"));
       }
     } catch (e) {
       print('Error: ${e}');
-      emit(FoundCaseErrorState(e.toString()));
+      emit(FoundCaseErrorState('Error'));
     }
   }
 
@@ -431,15 +355,14 @@ class AppCubitA extends Cubit<AppStateA> {
           headers: {"Content-type": "application/json"});
       if (response.statusCode == 500) {
         print("Failed to created.Status code: ${response.statusCode}");
-        emit(MissingCaseErrorState(
-            "Failed to created.Status code: ${response.statusCode}"));
+        emit(MissingCaseErrorState("Check for your data"));
       } else {
         print('missing created successfully: ${response.statusCode}');
-        emit(MissingCaseDoneState("missing created successfully"));
+        emit(MissingCaseDoneState("Missing created successfully"));
       }
     } catch (e) {
       print('Error: $e');
-      emit(MissingCaseErrorState(e.toString()));
+      emit(MissingCaseErrorState('Error'));
     }
   }
 
@@ -483,52 +406,37 @@ class AppCubitA extends Cubit<AppStateA> {
           body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
       if (response.statusCode == 200) {
-        emit(TherapySessionDoneState("child created successfully"));
+        emit(TherapySessionDoneState("Therapy Session created successfully"));
       } else {
-        emit(TherapySessionErrorState(
-            "Failed to created.Status code: ${response.statusCode}"));
+        print("Failed to created.Status code: ${response.statusCode}");
+        emit(TherapySessionErrorState("Check for your data"));
       }
     } catch (e) {
-      emit(TherapySessionErrorState(e.toString()));
+      print('Error: $e');
+      emit(TherapySessionErrorState("Error"));
     }
   }
 
-  ImagePicker picker = ImagePicker();
-  File? img;
-
-  Future<void> pickImage() async {
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      img = File(image.path);
-      await foundUploadImage(File(image.path));
-    } else {
-      print("null img");
-    }
-  }
-
-  Future<void> foundUploadImage(File image) async {
+  Future<void> result({required String child_dna}) async {
     try {
-      if (img != null) {
-        var request = http.MultipartRequest(
-          'POST',
+      emit(DnaResultLoadingState());
+      Map<String, String> dnaResult = {
+        "child_dna": child_dna,};
+      var response = await http.post(
           Uri.parse(
-              'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage'),
-        );
-
-        // List<int> bytes = await img!.readAsBytes();
-        // var image = http.MultipartFile.fromBytes('image', img!.path);
-        // request.files.add(image);
-
-        var response = await request.send();
-
-        if (response.statusCode == 200) {
-          print('Image uploaded successfully');
-        } else {
-          print('Error uploading image: ${response.reasonPhrase}');
-        }
+              'https://66tx354g-5000.euw.devtunnels.ms/align'),
+          body: convert.jsonEncode(dnaResult),
+          headers: {"Content-type": "application/json"});
+      if (response.statusCode == 200) {
+        print('Result is matched: ${response.body}');
+        emit(DnaResultDoneState("DNA Result: ${response.body}"));
+      } else {
+        print('Result is not matched: ${response.statusCode}');
+        emit(DnaResultErrorState("Result: ${response.statusCode}"));
       }
     } catch (e) {
-      print(e.toString());
+      emit(DnaResultErrorState("An error occurred: $e"));
+      print('Error: $e');
     }
   }
 
@@ -564,13 +472,15 @@ class AppCubitA extends Cubit<AppStateA> {
           body: convert.jsonEncode(userData),
           headers: {"Content-type": "application/json"});
       if (response.statusCode == 200) {
-        emit(DnaLabDoneState("dna lab created successfully"));
+        emit(DnaLabDoneState("Dna lab created successfully"));
       } else {
+        print("Failed to created.Status code: ${response.statusCode}");
         emit(DnaLabErrorState(
-            "Failed to created.Status code: ${response.statusCode}"));
+            "Check your data"));
       }
     } catch (e) {
-      emit(DnaLabErrorState(e.toString()));
+      print("Error: $e");
+      emit(DnaLabErrorState("Error"));
     }
   }
 
@@ -610,23 +520,87 @@ class AppCubitA extends Cubit<AppStateA> {
     }
   }
 
-  Future<void> matching()async{
-    try{
+  Future<void> matching(String matching) async {
+    try {
       emit(DnaResultLoadingState());
-      final response = await http.get(
-          Uri.parse(
-              "https://jokerboyxx0.pythonanywhere.com/calculate_and_display_matching_score"));
+      final response = await http.get(Uri.parse(
+          "https://jokerboyxx0.pythonanywhere.com/calculate_and_display_matching_score"));
       if (response.statusCode == 200) {
         emit(DnaResultDoneState("Dna Matching Found"));
-      }
-      else {
+      } else {
         print("Failed to match.Status code: ${response.statusCode}");
-        // emit(DnaResultErrorState(
-        //     "Failed to Match"));
+        emit(DnaResultErrorState(
+            "Failed to Match"));
       }
-    }catch(e){
+    } catch (e) {
       print('Error:$e');
-      // emit(DnaResultErrorState(e.toString()));
+      emit(DnaResultErrorState(e.toString()));
+    }
+  }
+
+  ImagePicker picker = ImagePicker();
+  File? img;
+
+  Future<void> pickFromGallery() async {
+    try {
+      final returnedImage =
+      await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (returnedImage == null) return;
+      emit(PickImageState("${upload(File(returnedImage.path))}"));
+      // setState(() {
+      //   img = File(returnedImage.path);
+      //   upload(File(returnedImage.path));
+      // });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> pickFromCamera() async {
+    try {
+      final returnedImage =
+      await ImagePicker().pickImage(source: ImageSource.camera);
+      if (returnedImage == null) return;
+      emit(PickImageState("${upload(File(returnedImage.path))}"));
+      // setState(() {
+      //   img = File(returnedImage.path);
+      //   upload(File(returnedImage.path));
+      // });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> upload(File image) async {
+    try {
+      emit(MatchingLoadingState());
+      Dio dio = Dio();
+      if (img != null) {
+        String imagename = img!
+            .path
+            .split("/")
+            .last;
+        FormData formData = FormData.fromMap({
+          'imagefile': await MultipartFile.fromFile(
+              img!.path, filename: imagename),
+        });
+        print(img);
+        print(imagename);
+
+        final response = await dio.post(
+            'https://48fe-156-202-56-201.ngrok-free.app/match-face',
+            data: formData);
+
+        if (response.statusCode == 200) {
+          print('Image uploaded successfully: ${response.data}');
+          emit(MatchingDoneState('${response.data}'));
+        } else {
+          print('Error uploading image: ${response.statusCode}');
+          emit(MatchingErrorState('image not found'));
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 }

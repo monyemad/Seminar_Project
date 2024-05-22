@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'dart:convert' as convert;
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/cubit/my_app_cubit.dart';
 import 'package:final_project/cubit/my_app_state.dart';
@@ -178,11 +176,19 @@ class _ChildScreenState extends State<ChildScreen> {
                       const SizedBox(
                         height: 16,
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            missingUploadImage(File("image"));
-                          },
-                          child: const Text("Upload to Save")),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text("Child Image:",style: TextStyle(fontSize: 20),),
+                          const SizedBox(width: 10,),
+                          ElevatedButton(
+                              onPressed: () {
+                                missingUploadImage(File("image"));
+                              },
+                              child: const Text("Upload image")),
+                        ],
+                      ),
                       const SizedBox(
                         height: 25,
                       ),

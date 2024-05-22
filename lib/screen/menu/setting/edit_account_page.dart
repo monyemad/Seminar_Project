@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:final_project/controllers/user_controller.dart';
 import 'package:final_project/screen/layout/home_page.dart';
+import 'package:final_project/widgets/form_field/custom_text.dart';
 import 'package:final_project/widgets/form_field/custom_textformfield.dart';
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:final_project/widgets/custom_pop.dart';
@@ -23,7 +24,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   TextEditingController age = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController gender = TextEditingController();
-  TextEditingController password = TextEditingController();
   TextEditingController email = TextEditingController();
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -41,9 +41,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 40,),
                     const CustomPop(
-                      bottom: 70,
+                      bottom: 40,
                     ),
+                    const CustomText(text:"Name:"),
+                    const SizedBox(height: 8,),
                     CustomTextFormField(
                       hintText: 'Name',
                       controller: name,
@@ -51,13 +54,16 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       prefixIcon: Icons.person_rounded,
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'value must not be empty';
+                          return 'Name must not be empty';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
                       height: 10,
                     ),
+                    const CustomText(text:"UserName:"),
+                    const SizedBox(height: 8,),
                     CustomTextFormField(
                       hintText: 'UserName',
                       controller: username,
@@ -65,13 +71,16 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       prefixIcon: Icons.person_rounded,
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'value must not be empty';
+                          return 'UserName must not be empty';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
                       height: 10,
                     ),
+                    const CustomText(text:"Email:"),
+                    const SizedBox(height: 8,),
                     CustomTextFormField(
                       hintText: 'Email',
                       controller: email,
@@ -79,27 +88,33 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       prefixIcon: Icons.email_rounded,
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'value must not be empty';
+                          return 'Email must not be empty';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
                       height: 10,
                     ),
+                    const CustomText(text:"Phone Number:"),
+                    const SizedBox(height: 8,),
                     CustomTextFormField(
-                      hintText: 'Phone number',
+                      hintText: 'Phone Number',
                       controller: phoneNumber,
                       keyboardType: TextInputType.phone,
                       prefixIcon: Icons.phone_rounded,
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'value must not be empty';
+                          return 'Phone number must not be empty';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
                       height: 10,
                     ),
+                    const CustomText(text:"Gender:"),
+                    const SizedBox(height: 8,),
                     CustomTextFormField(
                       hintText: 'Gender',
                       controller: gender,
@@ -107,27 +122,16 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       prefixIcon: Icons.face,
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'value must not be empty';
+                          return 'Gender must not be empty';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomTextFormField(
-                      hintText: 'Password',
-                      controller: password,
-                      keyboardType: TextInputType.visiblePassword,
-                      prefixIcon: Icons.lock_rounded,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'value must not be empty';
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const CustomText(text:"Age:"),
+                    const SizedBox(height: 8,),
                     CustomTextFormField(
                       hintText: 'Age',
                       controller: age,
@@ -135,8 +139,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       prefixIcon: Icons.numbers_rounded,
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'value must not be empty';
+                          return 'Age must not be empty';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(

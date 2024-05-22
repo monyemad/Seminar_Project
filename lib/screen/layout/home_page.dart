@@ -53,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     fit: BoxFit.cover),
               ),
             ),
-            const Divider(),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Setting'),
@@ -76,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const Divider(),
             ListTile(
                 leading: const Icon(Icons.bloodtype_rounded),
-                title: const Text('Test_Results'),
+                title: const Text('DNA_Results'),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return const DnaResultScreen();
@@ -129,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(
-                    height: 60,
+                    height: 20,
                   ),
                   CustomHome2(
                       onPressed: () {

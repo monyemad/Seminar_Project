@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:final_project/widgets/custom_bgcolor.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,7 @@ class UploadFoundScreen extends StatefulWidget {
 }
 
 class _UploadFoundScreenState extends State<UploadFoundScreen> {
+
   ImagePicker picker = ImagePicker();
   File? img;
 
@@ -23,7 +25,7 @@ class _UploadFoundScreenState extends State<UploadFoundScreen> {
       if (returnedImage == null) return;
       setState(() {
         img = File(returnedImage.path);
-        foundUploadImage(File(returnedImage.path));
+        // matchFace(returnedImage.path);
       });
     } catch (e) {
       print(e.toString());
@@ -37,90 +39,68 @@ class _UploadFoundScreenState extends State<UploadFoundScreen> {
       if (returnedImage == null) return;
       setState(() {
         img = File(returnedImage.path);
-        foundUploadImage(File(returnedImage.path));
+        // matchFace(returnedImage.path);
       });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<void> foundUploadImage(File image) async {
+  Future<void> matchFace(File imageFile) async {
+    final url = 'https://gfbb003j-5000.euw.devtunnels.ms/match-face';
     try {
-      Dio dio = Dio();
-      if (img != null) {
-        String imagename = img!.path.split("/").last;
-        FormData formData = FormData.fromMap({
-          'image': await MultipartFile.fromFile(img!.path, filename: imagename),
-        });
-        print(img);
-        print(imagename);
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.files.add(await http.MultipartFile.fromPath('photo-path', imageFile.path));
 
-        final response = await dio.post(
-            'https://sa3edny-backend-nodejs.onrender.com/found/uploadimage',
-            data: formData);
+      var response = await request.send();
 
-        if (response.statusCode == 200) {
-          print('Image uploaded successfully: ${response.data}');
-        } else {
-          print('Error uploading image: ${response.statusCode}');
-        }
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var result = jsonDecode(responseBody);
+        print('Match result: $result');
+      } else {
+        print('Failed to match face. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      print('Error occurred: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Upload Image'),
+      ),
       body: Stack(
         children: [
-          CustomBgColor(),
+          const CustomBgColor(),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Stack(
-                children: [
-                  img == null
-                      ? Image.asset(
-                          'assets/images/child (2).png',
-                          height: 150,
-                          width: 150,
-                        )
-                      : Image.file(
-                          img!,
-                          width: 150,
-                          height: 150,
-                        ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      height: 45,
-                      width: 45,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            style: BorderStyle.solid, color: Colors.black26),
-                        color: Colors.white60,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: IconButton(
-                          onPressed: pickFromGallery,
-                          icon: const Icon(Icons.camera_alt)),
-                    ),
-                  )
-                ],
+              ElevatedButton(onPressed: pickFromGallery, child: const Text("Gallery")),
+              const SizedBox(
+                height: 10,
               ),
+              ElevatedButton(onPressed: pickFromCamera, child: const Text("Camera")),
+              Center(
+                child: img == null
+                    ? const Text('Image not selected')
+                    : Image.file(
+                  img!,
+                  width: 180,
+                  height: 180,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(onPressed: img == null
+                  ? null
+                  : () {
+                matchFace(img!);
+              }, child: const Text("Upload")),
             ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          ElevatedButton(
-              onPressed: () {
-                foundUploadImage(File("image"));
-              },
-              child: Text('Upload image'))
         ],
       ),
     );
