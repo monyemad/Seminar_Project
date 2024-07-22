@@ -72,7 +72,6 @@ class _EvolutionScreenState extends State<EvolutionScreen> {
       if (response.statusCode == 200) {
         imageId = response.data['image_id'];
         _showSuccess('Image uploaded successfully. Image ID: $imageId');
-        // Save imageId locally
         final directory = await getApplicationDocumentsDirectory();
         final file = File('${directory.path}/image_id.txt');
         await file.writeAsString(imageId!);
